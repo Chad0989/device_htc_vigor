@@ -91,7 +91,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     gps.vigor \
     librs_jni \
-    com.android.future.usb.accessory
+    com.android.future.usb.accessory \
+    Torch
 
 ## CM dsp manager
 PRODUCT_PACKAGES += \
