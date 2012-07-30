@@ -1,0 +1,154 @@
+#
+# system.prop for vigor
+#
+
+ro.sf.lcd_density=320
+
+# RIL properties
+# cm props
+ro.telephony.ril_class=HTCVigorQualcommRIL
+ro.telephony.default_network=8
+telephony.lteOnCdmaDevice=1
+
+# RIL properties
+#+HTC_RIL: from QCT Fusion
+rild.libpath=/system/lib/libril-qc-qmi-1.so
+rild.libargs=-d /dev/smd0
+persist.rild.nitz_plmn=
+persist.rild.nitz_long_ons_0=
+persist.rild.nitz_long_ons_1=
+persist.rild.nitz_long_ons_2=
+persist.rild.nitz_long_ons_3=
+persist.rild.nitz_short_ons_0=
+persist.rild.nitz_short_ons_1=
+persist.rild.nitz_short_ons_2=
+persist.rild.nitz_short_ons_3=
+persist.rild.ril.ltedr=0
+persist.rild.ril.ltedrtable=max_retries=infinite,10000
+DEVICE_PROVISIONED=1
+ro.vendor.extension_library=/system/lib/libqc-opt.so
+ro.baseband.arch = svlte2a
+
+# graphics
+debug.composition.type=dyn
+debug.enabletr=true
+debug.sf.hw=1
+debug.egl.hw=1
+ro.opengles.version=131072
+ro.sf.compbypass.enable=1
+debug.qctwa.preservebuf=1
+
+# cm qcom configs
+com.qc.hardware=true
+com.qc.hdmi_out=true
+ro.hdmi.enable=true
+
+# qcom cpu governor service
+dev.pm.dyn_samplingrate=1
+
+# system props for the cne module
+#
+persist.cne.UseCne=false
+persist.cne.bat.range.low.med=30
+persist.cne.bat.range.med.high=60
+persist.cne.loc.policy.op=/system/etc/OperatorPolicy.xml
+persist.cne.loc.policy.user=/system/etc/UserPolicy.xml
+persist.cne.bwbased.rat.sel=false
+persist.cne.snsr.based.rat.mgt=false
+persist.cne.bat.based.rat.mgt=false
+persist.cne.be.ge.sqi.min=0
+persist.cne.be.ge.sqi.max=100
+persist.cne.be.umts.sqi.min=0
+persist.cne.be.umts.sqi.max=100
+persist.cne.be.hspa.sqi.min=0
+persist.cne.be.hspa.sqi.max=100
+persist.cne.be.1x.sqi.min=0
+persist.cne.be.1x.sqi.max=100
+persist.cne.be.do.sqi.min=0
+persist.cne.be.do.sqi.max=100
+persist.cne.be.wlan.sqi.min=0
+persist.cne.be.wlan.sqi.max=100
+
+#
+# system props for telephony modules
+#
+#device supports LTE
+ro.config.lte=true
+#device supports simultaneous 1x voice + LTE
+ro.ril.svlte1x=true
+#ro.config.ehrpd=true
+
+gsm.sim.operator.alpha=Verizon
+gsm.operator.alpha=Verizon
+gsm.sim.operator.numeric=310012
+gsm.operator.numeric=310012
+gsm.sim.operator.iso-country=us
+gsm.operator.iso-country=us
+
+#Welly_Fang_01/05/2010
+ro.cdma.home.operator.numeric = 310012
+ro.cdma.home.operator.alpha = Verizon
+ro.htc.device.slot1 = RUIM
+
+# For Verizon data retry configuration
+ro.cdma.data_retry_config = max_retries=infinite,0,0,60000,120000,480000,900000
+
+# Modify MMS APN retry timer from 5s to 2s.
+ro.gsm.2nd_data_retry_config = max_retries=3, 2000, 2000, 2000
+
+# RF team request
+ro.ril.enable.dtm = 0
+ro.ril.gprsclass = 12
+ro.ril.hsdpa.category = 10
+ro.ril.hsupa.category = 6
+ro.ril.hsxpa = 3
+ 
+# For HSDPA low throughput
+ro.ril.disable.power.collapse = 1
+ 
+#system props for time-services
+persist.timed.enable=true
+ 
+# For the default value of agps
+ro.ril.def.agps.mode = 6
+
+# audio
+#lpa.decode=true
+
+# wifi
+wifi.interface=eth0
+
+#mobiledata
+mobiledata.interfaces=rmnet0,rmnet_sdio0,rmnet1,rmnet_sdio1,data,gprs
+
+# data module
+ro.use_data_netmgrd=true
+persist.data_netmgrd_mtu=1428
+persist.data_netmgrd_nint=16
+
+# For Pyramid China NEL
+ro.ril.enable.prl.recognition = 1
+
+#SIM
+persist.radio.no_wait_for_card=1
+
+# System prop for switching gps driver to qmi
+persist.gps.qmienabled=true
+
+# enable time services
+persist.timed.enable=true
+
+# System property for cabl
+ro.qualcomm.cabl=0
+
+# System property for thermald
+persist.thermal.monitor=true
+
+# Set this value to force load 8k modem in release key
+# vigot must enable this value to enable 9kramdump
+ro.modem.load.release_key=true
+
+# support sdcard2
+ro.sdcard2 = 1
+# For internal fat file system
+ro.phone_fat = 1
