@@ -1,4 +1,4 @@
-# Copyright (C) 2009 The Android Open Source Project
+# Copyright (C) 2012 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16776192
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1308621824
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 2550136320
 BOARD_FLASH_BLOCK_SIZE := 131072
-BOARD_CUSTOM_GRAPHICS := ../../../device/htc/vigor/recovery/graphics.c
+BOARD_CUSTOM_GRAPHICS := device/htc/vigor/recovery/graphics.c
 TARGET_RELEASETOOLS_EXTENSIONS := device/htc/common
 
 TARGET_PREBUILT_KERNEL := device/htc/vigor/ramdisk/kernel
@@ -85,5 +85,5 @@ BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_NO_SELECT_BUTTON := 1
 
 BOARD_USE_LEGACY_TOUCHSCREEN := true
-ENABLE_WEBGL := true
 DYNAMIC_SHARED_LIBV8SO := true
+BOARD_USE_NEW_LIBRIL_HTC := true

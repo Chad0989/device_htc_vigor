@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2011 The CyanogenMod Project
+# Copyright (C) 2012 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,54 +46,32 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/prebuilt/etc/init.qcom.mdm_links.sh:system/etc/init.qcom.mdm_links.sh \
     device/htc/vigor/prebuilt/etc/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
-
 ## (2) Also get non-open-source specific aspects if available
 $(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
 
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.com.google.clientidbase=android-verizon \
-	ro.com.google.locationfeatures=1 \
-	ro.cdma.home.operator.numeric = 310012 \
-	ro.cdma.home.operator.alpha = Verizon
+    ro.com.google.clientidbase=android-verizon \
+    ro.com.google.locationfeatures=1 \
+    ro.cdma.home.operator.numeric=310012 \
+    ro.cdma.home.operator.alpha=Verizon
 
 ## Misc
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.setupwizard.enable_bypass=1
+    ro.setupwizard.enable_bypass=1
 
 ## Overlays
 DEVICE_PACKAGE_OVERLAYS += device/htc/vigor/overlay
 
 # Permissions
 PRODUCT_COPY_FILES += \
-    frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-    frameworks/base/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
-    frameworks/base/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
-    frameworks/base/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-    frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-    frameworks/base/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/base/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
-    frameworks/base/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
-    frameworks/base/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
-    frameworks/base/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
-    frameworks/base/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
-    frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
-    frameworks/base/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
-    frameworks/base/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
     frameworks/base/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml \
     frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
-
-## Other
-PRODUCT_PACKAGES += \
-   libstagefrighthw \
-   Stk \
 
 ## Misc
 PRODUCT_PACKAGES += \
     gps.vigor \
-    librs_jni \
-    com.android.future.usb.accessory \
-    Torch \
-    FileManager
+    FileManager \
+    Stk
 
 ## CM dsp manager
 PRODUCT_PACKAGES += \
@@ -195,14 +173,7 @@ $(call inherit-product, device/htc/vigor/media_a1026.mk)
 $(call inherit-product, device/htc/vigor/media_htcaudio.mk)
 
 $(call inherit-product, frameworks/base/build/phone-xhdpi-1024-dalvik-heap.mk)
-
 $(call inherit-product, build/target/product/full_base_telephony.mk)
-
-# Audio
-
-PRODUCT_PACKAGES += \
-audio_policy.msm8660 \
-audio.primary.msm8660 
 
 PRODUCT_NAME := htc_vigor
 PRODUCT_DEVICE := vigor
