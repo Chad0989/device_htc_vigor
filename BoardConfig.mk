@@ -23,6 +23,7 @@
 # WARNING: This line must come *before* including the proprietary
 # variant, so that it gets overwritten by the parent (which goes
 # against the traditional rules of inheritance).
+USE_CAMERA_STUB := true
 
 # inherit from the proprietary version
 -include vendor/htc/vigor/BoardConfigVendor.mk
@@ -35,9 +36,9 @@ TARGET_BOOTLOADER_BOARD_NAME := vigor
 #RIL
 # TARGET_PROVIDES_LIBRIL := vendor/htc/vigor/proprietary/lib/libril.so
 
-BOARD_KERNEL_BASE := 0x48800000
+BOARD_KERNEL_BASE      := 0x48800000
 BOARD_KERNEL_PAGE_SIZE := 00000800
-BOARD_KERNEL_CMDLINE := console=ttyHSL3 androidboot.hardware=vigor no_console_suspend=1 
+BOARD_KERNEL_CMDLINE   := console=ttyHSL3 androidboot.hardware=vigor no_console_suspend=1 
 
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := vigor
 
