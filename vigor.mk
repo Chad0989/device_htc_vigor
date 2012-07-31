@@ -18,6 +18,9 @@
 PRODUCT_COPY_FILES += \
     device/common/gps/gps.conf_US:system/etc/gps.conf
 
+# Get the long list of APNs
+PRODUCT_COPY_FILES := device/sample/etc/apns-full-conf.xml:system/etc/apns-conf.xml
+
 ## recovery and custom charging
 PRODUCT_COPY_FILES += \
     device/htc/vigor/recovery/sbin/choice_fn:recovery/root/sbin/choice_fn \
@@ -28,34 +31,34 @@ PRODUCT_COPY_FILES += \
 
 ## ramdisk stuffs
 PRODUCT_COPY_FILES += \
+    device/htc/vigor/default.prop:root/default.prop \
+    device/htc/vigor/ramdisk/init:root/init \
     device/htc/vigor/ramdisk/init.vigor.rc:root/init.vigor.rc \
     device/htc/vigor/ramdisk/ueventd.vigor.rc:root/ueventd.vigor.rc \
     device/htc/vigor/ramdisk/init.vigor.usb.rc:root/init.vigor.usb.rc \
-    device/htc/vigor/default.prop:root/default.prop \
-    device/htc/vigor/sbin/gzip_recvy:root/sbin/gzip_recvy \
-    device/htc/vigor/sbin/htc_ebdlogd_recvy:root/sbin/htc_ebdlogd_recvy \
-    device/htc/vigor/sbin/logcat2_recvy:root/sbin/logcat2_recvy \
-    device/htc/vigor/sbin/mfgsrv:root/sbin/mfgsrv \
-    device/htc/vigor/sbin/tpd:root/sbin/tpd
+    device/htc/vigor/ramdisk/sbin/gzip_recvy:root/sbin/gzip_recvy \
+    device/htc/vigor/ramdisk/sbin/htc_ebdlogd_recvy:root/sbin/htc_ebdlogd_recvy \
+    device/htc/vigor/ramdisk/sbin/logcat2_recvy:root/sbin/logcat2_recvy \
+    device/htc/vigor/ramdisk/sbin/mfgsrv:root/sbin/mfgsrv \
+    device/htc/vigor/ramdisk/sbin/tpd:root/sbin/tpd
     
 # Misc
 PRODUCT_COPY_FILES += \
     device/htc/vigor/prebuilt/etc/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
-    device/htc/vigor/prebuilt/etc/init.qcom.mdm_links.sh:system/etc/init.qcom.mdm_links.sh \
-    device/htc/vigor/prebuilt/etc/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
+    device/htc/vigor/prebuilt/etc/init.qcom.mdm_links.sh:system/etc/init.qcom.mdm_links.sh
 
 ## (2) Also get non-open-source specific aspects if available
 $(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
 
+## Misc
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.clientidbase=android-verizon \
     ro.com.google.locationfeatures=1 \
     ro.cdma.home.operator.numeric=310012 \
-    ro.cdma.home.operator.alpha=Verizon
-
-## Misc
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.setupwizard.enable_bypass=1
+    ro.cdma.home.operator.alpha=Verizon \
+    ro.setupwizard.enable_bypass=1 \
+    dalvik.vm.lockprof.threshold=500 \
+    dalvik.vm.dexopt-flags=m=y
 
 ## Overlays
 DEVICE_PACKAGE_OVERLAYS += device/htc/vigor/overlay
@@ -73,8 +76,7 @@ PRODUCT_PACKAGES += \
 
 ## CM dsp manager
 PRODUCT_PACKAGES += \
-    DSPManager \
-    libcyanogen-dsp
+    DSPManager libcyanogen-dsp
 
 ## DSP Audio
 PRODUCT_COPY_FILES += \
@@ -139,8 +141,7 @@ PRODUCT_LOCALES += en_US
 
 ## misc
 PRODUCT_COPY_FILES += \
-    device/htc/vigor/prebuit/etc/vold.fstab:system/etc/vold.fstab \
-    device/htc/vigor/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
+    device/htc/vigor/vold.fstab:system/etc/vold.fstab
 
 ## Kernel and modules
 ifeq ($(TARGET_PREBUILT_KERNEL),)
