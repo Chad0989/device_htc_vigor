@@ -51,7 +51,11 @@
         <value>844800</value>
         <value>998400</value>
     </array>
+    <!-- Power consumption in suspend -->
     <item name="cpu.idle">2.8</item>
+    <!-- Power consumption due to wake lock held -->
+    <item name="cpu.awake">10</item>
+    <!-- Power consumption at different speeds -->
     <array name="cpu.active">
         <value>66.6</value>
         <value>84</value>
