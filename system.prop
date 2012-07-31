@@ -77,7 +77,6 @@ ro.config.lte=true
 
 #device supports simultaneous 1x voice + LTE
 ro.ril.svlte1x=true
-#ro.config.ehrpd=true
 
 gsm.sim.operator.alpha=Verizon
 gsm.operator.alpha=Verizon
@@ -96,6 +95,9 @@ ro.cdma.data_retry_config=max_retries=infinite,0,0,60000,120000,480000,900000
 
 # Modify MMS APN retry timer from 5s to 2s.
 ro.gsm.2nd_data_retry_config=max_retries=3, 2000, 2000, 2000
+
+# Modify MTU from 1500 to 1428 on 3G network
+ro.ril.set.mtusize=1428
 
 # RF team request
 ro.ril.enable.dtm=0
