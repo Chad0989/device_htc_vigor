@@ -32,13 +32,11 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/ramdisk/ueventd.vigor.rc:root/ueventd.vigor.rc \
     device/htc/vigor/ramdisk/init.vigor.usb.rc:root/init.vigor.usb.rc \
     device/htc/vigor/default.prop:root/default.prop \
-    device/htc/vigor/sbin/adbd:root/sbin/adbd \
     device/htc/vigor/sbin/gzip_recvy:root/sbin/gzip_recvy \
     device/htc/vigor/sbin/htc_ebdlogd_recvy:root/sbin/htc_ebdlogd_recvy \
     device/htc/vigor/sbin/logcat2_recvy:root/sbin/logcat2_recvy \
     device/htc/vigor/sbin/mfgsrv:root/sbin/mfgsrv \
     device/htc/vigor/sbin/tpd:root/sbin/tpd \
-    device/htc/vigor/sbin/ueventd:root/sbin/ueventd
     
 # Misc
 PRODUCT_COPY_FILES += \
