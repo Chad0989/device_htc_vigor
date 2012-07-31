@@ -16,7 +16,7 @@
 
 ## The gps config appropriate for this device
 PRODUCT_COPY_FILES += \
-    device/htc/vigor/prebuilt/etc/gps.conf:system/etc/gps.conf
+    device/common/gps/gps.conf_US:system/etc/gps.conf
 
 ## recovery and custom charging
 PRODUCT_COPY_FILES += \
