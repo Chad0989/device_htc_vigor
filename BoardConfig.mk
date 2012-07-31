@@ -42,7 +42,8 @@ BOARD_KERNEL_CMDLINE   := console=ttyHSL3 androidboot.hardware=vigor no_console_
 
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := vigor
 
-BOARD_USES_QCOM_LIBS := true
+COMMON_GLOBAL_CFLAGS += -DQCOM_ROTATOR_KERNEL_FORMATS
+TARGET_USES_OVERLAY := true
 
 # cat /proc/emmc
 # dev:        size     erasesize name
@@ -79,11 +80,11 @@ TARGET_PREBUILT_KERNEL := device/htc/vigor/ramdisk/kernel
 
 TARGET_RECOVERY_INITRC := device/htc/vigor/recovery/init.rc
 BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/mmcblk0p37
-BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk1p1
+BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk1
 BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p2
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
-BOARD_HAS_NO_SELECT_BUTTON := 1
+BOARD_HAS_NO_SELECT_BUTTON := true
 
 BOARD_USE_LEGACY_TOUCHSCREEN := true
 DYNAMIC_SHARED_LIBV8SO := true
