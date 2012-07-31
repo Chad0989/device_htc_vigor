@@ -28,7 +28,6 @@ persist.rild.nitz_short_ons_2=
 persist.rild.nitz_short_ons_3=
 persist.rild.ril.ltedr=0
 persist.rild.ril.ltedrtable=max_retries=infinite,10000
-ril.subscription.types=NV,RUIM
 DEVICE_PROVISIONED=1
 ro.vendor.extension_library=/system/lib/libqc-opt.so
 ro.baseband.arch=svlte2a
@@ -155,3 +154,6 @@ ro.phone_fat=1
 
 # UMS
 persist.sys.usb.config=mass_storage,adb
+
+# Disable debugging notify icon on statusbar
+persist.adb.notify=0

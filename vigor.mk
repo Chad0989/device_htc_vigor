@@ -31,7 +31,7 @@ PRODUCT_COPY_FILES += \
 
 ## ramdisk stuffs
 PRODUCT_COPY_FILES += \
-    device/htc/vigor/default.prop:root/default.prop \
+    device/htc/vigor/ramdisk/default.prop:root/default.prop \
     device/htc/vigor/ramdisk/init:root/init \
     device/htc/vigor/ramdisk/init.vigor.rc:root/init.vigor.rc \
     device/htc/vigor/ramdisk/ueventd.vigor.rc:root/ueventd.vigor.rc \
