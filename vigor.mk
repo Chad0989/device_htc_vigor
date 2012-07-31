@@ -152,10 +152,6 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
-## HAX
-PRODUCT_COPY_FILES += \
-    device/htc/vigor/prebuilt/libcryp98.so:system/lib/libcryp98.so
-
 $(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
 
 # common msm8660 configs
