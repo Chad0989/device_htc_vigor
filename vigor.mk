@@ -36,7 +36,7 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/sbin/htc_ebdlogd_recvy:root/sbin/htc_ebdlogd_recvy \
     device/htc/vigor/sbin/logcat2_recvy:root/sbin/logcat2_recvy \
     device/htc/vigor/sbin/mfgsrv:root/sbin/mfgsrv \
-    device/htc/vigor/sbin/tpd:root/sbin/tpd \
+    device/htc/vigor/sbin/tpd:root/sbin/tpd
     
 # Misc
 PRODUCT_COPY_FILES += \
