@@ -227,12 +227,10 @@ service kickstart /system/bin/qcks lc
     class main
     oneshot
 
-service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
+service wpa_supplicant /system/bin/wpa_supplicant \
     -Dwext -ieth0 -c/data/misc/wifi/wpa_supplicant.conf
-    user root
-    group wifi inet
     class main
-    socket wpa_eth0 dgram 660 wifi wifi
+    socket wpa_eth0 dgram 0660 wifi wifi
     disabled
     oneshot
 
@@ -275,8 +273,7 @@ service bugreport /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
 # Make sure we startup btld before hcid
 # Set target address to emulator host loopback IF
 # Limit baudrate to 460800 to ensure reliable uart operation
-#service btld /system/bin/logwrapper /system/bin/btld -hwtun 10.0.2.2 -hb 460800 3000000 -lpm 1
-service btld /system/bin/logwrapper /system/bin/btld -hb 3000000
+service btld /system/bin/btld -lpm 1 -hb 3000000
     user root
     group bluetooth net_bt_admin
     disabled
@@ -323,7 +320,6 @@ on property:service.modem.enable=1
 on property:service.modem.enable=0
 	stop modem
 
-#+HTC_RIL: from QCT Fusion
 service bridgemgrd /system/bin/bridgemgrd
     class main
     user radio
@@ -352,11 +348,14 @@ service ril-daemon /system/bin/rild
     socket rild-debug stream 660 radio system
     user root
     group radio cache inet misc audio qcom_oncrpc diag system
-#-HTC_RIL: from QCT Fusion
 
 service htcbatt /system/bin/htcbatt
     class main
     user root
+
+service thermald /system/bin/thermald
+    user root
+    disabled
 
 service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
     class main
@@ -368,15 +367,15 @@ on property:init.svc.bootanim=stopped
     start thermald
     start mpdecision
 
-# I-Mz add for SVLTE GPS daemon and related folder from QCT fusion ++
 service gpsone_daemon /system/bin/gpsone_daemon
     class main
     user root
     group qcom_oncrpc
-#    oneshot
-#    disabled
-#    start gpsone_daemon
-# I-Mz add for SVLTE GPS daemon and related folder from QCT fusion --
+
+service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
+    class main
+    user root
+    disabled
 
 service htc_ebdlogd /system/bin/htc_ebdlogd -s -k -P 7
     class main
