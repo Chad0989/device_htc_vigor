@@ -125,7 +125,8 @@ PRODUCT_COPY_FILES += \
 
 ##  Wifi
 PRODUCT_COPY_FILES += \
-    device/htc/vigor/prebuilt/system/lib/modules/bcm4330.ko:system/lib/modules/bcm4330.ko
+    device/htc/vigor/prebuilt/system/lib/modules/bcm4330.ko:system/lib/modules/bcm4330.ko \
+    device/htc/vigor/configs/wpa_supplicant.conf:/system/etc/wifi/wpa_supplicant.conf
 
 BOARD_WLAN_DEVICE_REV := bcm4330_b2
 WIFI_BAND := 802_11_ABG
