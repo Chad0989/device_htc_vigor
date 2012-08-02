@@ -33,6 +33,9 @@
     <!-- disable menu hard key in non-pattern lockscreen -->
     <bool name="config_disableMenuKeyInLockScreen">true</bool>
 
+    <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
+    <bool name="config_unplugTurnsOnScreen">true</bool>
+
     <!-- Component name of the service providing network location support. -->
     <string name="config_networkLocationProvider">com.google.android.location.NetworkLocationProvider</string>
 
@@ -137,6 +140,7 @@
         <item>"mobile_mms,2,0,2,60000,true"</item>
         <item>"mobile_supl,3,0,2,60000,true"</item>
         <item>"mobile_hipri,5,0,3,60000,true"</item>
+        <item>"mobile_bluetooth,7,7,1,-1,true"</item>
         <item>"mobile_fota,10,0,2,60000,true"</item>
         <item>"mobile_ims,11,0,2,60000,true"</item>
         <item>"mobile_cbs,12,0,2,60000,true"</item>
@@ -148,6 +152,7 @@
     <string-array translatable="false" name="radioAttributes">
         <item>"1,1"</item>
         <item>"0,1"</item>
+        <item>"7,1"</item>
     </string-array>
 
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
@@ -161,7 +166,7 @@
          Wifi interfaces.  If the device doesn't want to support tethering over Wifi this
          should be empty.  An example would be "softap.*" -->
     <string-array translatable="false" name="config_tether_wifi_regexs">
-        <item>"wlan\\d"</item>
+        <item>"wlan0"</item>
     </string-array>
 
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
@@ -178,8 +183,8 @@
     <integer-array translatable="false" name="config_tether_upstream_types">
         <item>0</item>
         <item>1</item>
-        <item>4</item>
         <item>5</item>
+        <item>7</item>
     </integer-array>
 
     <!-- Boolean indicating whether the wifi chipset has dual frequency band support -->
