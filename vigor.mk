@@ -119,6 +119,10 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/firmware/leia_pfp_470.fw:system/etc/firmware/leia_pfp_470.fw \
     device/htc/vigor/firmware/leia_pm4_470.fw:system/etc/firmware/leia_pm4_470.fw 
 
+## Graphics
+PRODUCT_COPY_FILES += \
+    device/htc/vigor/configs/adreno_config.txt:system/etc/adreno_config.txt
+
 ##  Wifi
 PRODUCT_COPY_FILES += \
     device/htc/vigor/prebuilt/system/lib/modules/bcm4330.ko:system/lib/modules/bcm4330.ko
