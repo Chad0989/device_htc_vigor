@@ -116,7 +116,8 @@ persist.timed.enable=true
 ro.ril.def.agps.mode=6
 
 # audio
-#lpa.decode=true
+lpa.decode=true
+lpa.use-stagefright=true
 media.a1026.nsForVoiceRec=0
 media.a1026.enableA1026=0
 htc.audio.alt.enable=0

@@ -47,7 +47,6 @@ BOARD_USE_LEGACY_TOUCHSCREEN := true
 
 # RIL
 BOARD_PROVIDES_LIBRIL    := true
-BOARD_USE_NEW_LIBRIL_HTC := true
 
 # Filesystem
 BOARD_USES_MMCUTILS := true
@@ -68,7 +67,7 @@ TARGET_RECOVERY_INITRC := device/htc/vigor/recovery/init.rc
 BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_RELEASETOOLS_EXTENSIONS := device/htc/common
 
-# Gps
+# GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := vigor
 
 # Misc

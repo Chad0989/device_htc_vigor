@@ -15,8 +15,7 @@
 #
 
 ## The gps config appropriate for this device
-PRODUCT_COPY_FILES += \
-    device/common/gps/gps.conf_US:system/etc/gps.conf
+PRODUCT_COPY_FILES += device/common/gps/gps.conf_US:system/etc/gps.conf
 
 # Get the long list of APNs
 PRODUCT_COPY_FILES := device/sample/etc/apns-full-conf.xml:system/etc/apns-conf.xml
@@ -41,7 +40,7 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/ramdisk/sbin/mfgsrv:root/sbin/mfgsrv \
     device/htc/vigor/ramdisk/sbin/tpd:root/sbin/tpd
     
-# Misc
+# QCOM
 PRODUCT_COPY_FILES += \
     device/htc/vigor/prebuilt/etc/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
     device/htc/vigor/prebuilt/etc/init.qcom.mdm_links.sh:system/etc/init.qcom.mdm_links.sh
@@ -73,9 +72,8 @@ PRODUCT_PACKAGES += \
     FileManager \
     Stk
 
-## CM dsp manager
-PRODUCT_PACKAGES += \
-    DSPManager libcyanogen-dsp
+## CM DSPManager
+PRODUCT_PACKAGES += DSPManager libcyanogen-dsp
 
 ## DSP Audio
 PRODUCT_COPY_FILES += \
@@ -93,11 +91,7 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/dsp/soundimage/srsfx_trumedia_voice.cfg:system/etc/soundimage/srsfx_trumedia_voice.cfg \
     device/htc/vigor/dsp/soundimage/srs_bypass.cfg:system/etc/soundimage/srs_bypass.cfg \
     device/htc/vigor/dsp/soundimage/srs_geq10.cfg:system/etc/soundimage/srs_geq10.cfg \
-    device/htc/vigor/dsp/soundimage/srs_global.cfg:system/etc/soundimage/srs_global.cfg \
-    device/htc/vigor/prebuilt/audio/libacdbmapper.so:obj/lib/libacdbmapper.so \
-    device/htc/vigor/prebuilt/audio/libacdbloader.so:obj/lib/libacdbloader.so \
-    device/htc/vigor/prebuilt/audio/libacdbmapper.so:system/lib/libacdbmapper.so \
-    device/htc/vigor/prebuilt/audio/libacdbloader.so:system/lib/libacdbloader.so
+    device/htc/vigor/dsp/soundimage/srs_global.cfg:system/etc/soundimage/srs_global.cfg
 
 ## Keylayouts and Keychars
 PRODUCT_COPY_FILES += \
@@ -129,7 +123,6 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/configs/wpa_supplicant.conf:/system/etc/wifi/wpa_supplicant.conf
 
 BOARD_WLAN_DEVICE_REV := bcm4330_b2
-WIFI_BAND := 802_11_ABG
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4330/device-bcm.mk)
 
 # QC thermald config
@@ -163,7 +156,7 @@ $(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
 $(call inherit-product, device/htc/msm8660-common/msm8660.mk)
 
 PRODUCT_COPY_FILES += \
-     device/htc/vigor/media_profiles.xml:system/etc/media_profiles.xml
+     device/htc/vigor/configs/media_profiles.xml:system/etc/media_profiles.xml
 
 $(call inherit-product, frameworks/base/build/phone-xhdpi-1024-dalvik-heap.mk)
 $(call inherit-product, build/target/product/full_base_telephony.mk)
