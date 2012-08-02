@@ -117,6 +117,10 @@ ro.ril.def.agps.mode=6
 
 # audio
 #lpa.decode=true
+media.a1026.nsForVoiceRec=0
+media.a1026.enableA1026=0
+htc.audio.alt.enable=0
+htc.audio.hac.enable=0
 
 # wifi
 wifi.interface=eth0

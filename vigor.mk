@@ -164,12 +164,6 @@ $(call inherit-product, device/htc/msm8660-common/msm8660.mk)
 PRODUCT_COPY_FILES += \
      device/htc/vigor/media_profiles.xml:system/etc/media_profiles.xml
 
-## media profiles and capabilities spec
-$(call inherit-product, device/htc/vigor/media_a1026.mk)
-
-## htc audio settings
-$(call inherit-product, device/htc/vigor/media_htcaudio.mk)
-
 $(call inherit-product, frameworks/base/build/phone-xhdpi-1024-dalvik-heap.mk)
 $(call inherit-product, build/target/product/full_base_telephony.mk)
 
