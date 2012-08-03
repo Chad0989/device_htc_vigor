@@ -136,9 +136,8 @@ PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 PRODUCT_LOCALES += en_US
 
-## misc
-PRODUCT_COPY_FILES += \
-    device/htc/vigor/vold.fstab:system/etc/vold.fstab
+## vold
+PRODUCT_COPY_FILES += device/htc/vigor/configs/vold.fstab:system/etc/vold.fstab
 
 ## Kernel and modules
 ifeq ($(TARGET_PREBUILT_KERNEL),)

@@ -14,6 +14,8 @@
 ## optional_flags - Determine whether the volume is encryptable or nonremovable
 ######################
 
-# Mounts the first usable partition of the specified device
-dev_mount sdcard /mnt/sdcard 37 /devices/platform/msm_sdcc.1/mmc_host/mmc0
-dev_mount sdcard2 /mnt/sdcard2 auto /devices/platform/msm_sdcc.3/mmc_host/mmc2
+# internal sdcard
+#dev_mount emmc /mnt/emmc 37 /devices/platform/msm_sdcc.1/mmc_host/mmc0 nonremovable,encryptable
+
+# external sdcard
+dev_mount sdcard /mnt/sdcard auto /devices/platform/msm_sdcc.3/mmc_host/mmc2

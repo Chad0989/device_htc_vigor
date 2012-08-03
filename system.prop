@@ -14,7 +14,6 @@ ro.telephony.default_network=8
 telephony.lteOnCdmaDevice=1
 
 # RIL properties
-#+HTC_RIL: from QCT Fusion
 rild.libpath=/system/lib/libril-qc-qmi-1.so
 rild.libargs=-d /dev/smd0
 persist.rild.nitz_plmn=
