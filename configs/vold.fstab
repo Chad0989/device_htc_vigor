@@ -15,7 +15,7 @@
 ######################
 
 # internal sdcard
-#dev_mount emmc /mnt/emmc 37 /devices/platform/msm_sdcc.1/mmc_host/mmc0 nonremovable,encryptable
+#dev_mount emmc /mnt/emmc 38 /devices/platform/msm_sdcc.1/mmc_host/mmc0 nonremovable,encryptable
 
 # external sdcard
 dev_mount sdcard /mnt/sdcard auto /devices/platform/msm_sdcc.3/mmc_host/mmc2
