@@ -57,6 +57,7 @@
 /dev/mdm                  0660   system     system
 /dev/ttyHSL1              0660   system     system
 /dev/tty_sdio_00          0660   system     system
+/dev/block/mmcblk0p16     0660   radio      diag
 /dev/block/mmcblk0p17     0660   system     system
 /dev/block/mmcblk0p21     0660   system     system
 /dev/video*               0660   system     camera
