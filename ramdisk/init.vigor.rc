@@ -2,24 +2,15 @@ import init.vigor.usb.rc
 
 on early-init
     export EXTERNAL_STORAGE /mnt/sdcard
-    export SECONDARY_STORAGE /mnt/emmc
-
     mkdir /mnt/sdcard 0775 system system
-    mkdir /mnt/emmc 0775 system system
-
+    # for backwards compatibility
     symlink /mnt/sdcard /sdcard
-    symlink /mnt/emmc /emmc
 
 on early-fs
     mkdir /system
     mkdir /data 0771 system system
     mkdir /cache 0771 system cache
     mkdir /devlog 0700 root root
-    
-    mount ext4 /dev/block/mmcblk0p29 /system wait ro data=ordered noauto_da_alloc
-    mount ext4 /dev/block/mmcblk0p35 /data wait noatime nosuid nodev data=ordered noauto_da_alloc
-    mount ext4 /dev/block/mmcblk0p36 /cache wait noatime nosuid nodev data=ordered noauto_da_alloc
-    mount ext4 /dev/block/mmcblk0p30 /devlog wait noatime nosuid nodev data=ordered noauto_da_alloc
     
     # 8x60: mount radio partition and create links for modem/q6 firmwares
     rm /vendor
@@ -67,6 +58,14 @@ on early-fs
     symlink /vendor/firmware/misc_mdm/image/efs2.mbn /vendor/firmware/efs2.mbn
     symlink /vendor/firmware/misc_mdm/image/amss.mbn /vendor/firmware/amss.mbn
     symlink /vendor/firmware/misc_mdm/image/htcssmem.mbn /vendor/firmware/htcssmem.mbn
+
+    symlink /system/vendor/etc/audio_effects.conf /vendor/etc/audio_effects.conf
+
+    mount ext4 /dev/block/mmcblk0p29 /system wait ro data=ordered noauto_da_alloc
+    setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
+    mount ext4 /dev/block/mmcblk0p35 /data wait noatime nosuid nodev data=ordered noauto_da_alloc
+    mount ext4 /dev/block/mmcblk0p36 /cache wait noatime nosuid nodev data=ordered noauto_da_alloc
+    mount ext4 /dev/block/mmcblk0p30 /devlog wait noatime nosuid nodev data=ordered noauto_da_alloc
 
 on post-fs-data
     wait /dev/ttyHSL1
@@ -165,6 +164,10 @@ on init
     chown radio radio /sys/class/power_supply/battery/phone_call
     chown radio radio /sys/class/power_supply/battery/network_search
 
+    chown system /sys/devices/platform/rs300000a7.65536/force_sync
+    chown system /sys/devices/platform/rs300000a7.65536/sync_sts
+    chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
+
     # Chown polling nodes as needed from UI running on system server
     chown system system /persist
     chmod 0771 /persist
@@ -177,7 +180,14 @@ on init
     chown system system /sys/devices/platform/msm_sdcc.3/polling
     chown system system /sys/devices/platform/msm_sdcc.4/polling
 
-    chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
+    # Overwrite framework low memory killer setting
+    write /sys/module/lowmemorykiller/parameters/minfree 2048,3072,4096,6144,8192,12288
+    write /sys/module/lowmemorykiller/parameters/minfile 2048,3072,4096,6144,8192,12288
+    write /sys/module/lowmemorykiller/parameters/check_filepages 1
+
+on early-boot
+    # set RLIMIT_MEMLOCK to 64MB
+    setrlimit 8 67108864 67108864
 
 on boot
     # allow interfaces to get v6 address when tethering is enabled
