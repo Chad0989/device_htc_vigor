@@ -63,7 +63,7 @@ PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 
 ## Misc
-PRODUCT_PACKAGES += gps.vigor Stk FileManager CellBroadcastReceiver
+PRODUCT_PACKAGES += gps.vigor Stk FileManager
 
 ## CM DSPManager
 PRODUCT_PACKAGES += DSPManager libcyanogen-dsp
