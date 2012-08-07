@@ -31,9 +31,6 @@ USE_CAMERA_STUB := true
 # inherit from common msm8660
 -include device/htc/msm8660-common/BoardConfigCommon.mk
 
-# vold
-BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := vigor
 
@@ -58,9 +55,7 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1308621824
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 2550136320
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
-#BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/mmcblk0p37
-#BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk1p1
-#BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p2
+BOARD_VOLD_MAX_PARTITIONS := 38
 
 # Recovery
 BOARD_CUSTOM_GRAPHICS := ../../../device/htc/vigor/recovery/graphics.c
