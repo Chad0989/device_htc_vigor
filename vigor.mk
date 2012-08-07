@@ -36,8 +36,7 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/ramdisk/sbin/gzip_recvy:root/sbin/gzip_recvy \
     device/htc/vigor/ramdisk/sbin/htc_ebdlogd_recvy:root/sbin/htc_ebdlogd_recvy \
     device/htc/vigor/ramdisk/sbin/logcat2_recvy:root/sbin/logcat2_recvy \
-    device/htc/vigor/ramdisk/sbin/mfgsrv:root/sbin/mfgsrv \
-    device/htc/vigor/ramdisk/sbin/tpd:root/sbin/tpd
+    device/htc/vigor/ramdisk/sbin/mfgsrv:root/sbin/mfgsrv
     
 # QCOM
 PRODUCT_COPY_FILES += \
