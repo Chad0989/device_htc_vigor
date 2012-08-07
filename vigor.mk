@@ -50,8 +50,6 @@ $(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.clientidbase=android-verizon \
     ro.com.google.locationfeatures=1 \
-    ro.cdma.home.operator.numeric=310012 \
-    ro.cdma.home.operator.alpha=Verizon \
     ro.setupwizard.enable_bypass=1 \
     dalvik.vm.lockprof.threshold=500 \
     dalvik.vm.dexopt-flags=m=y
@@ -65,7 +63,7 @@ PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 
 ## Misc
-PRODUCT_PACKAGES += gps.vigor Stk FileManager
+PRODUCT_PACKAGES += gps.vigor Stk FileManager CellBroadcastReceiver
 
 # Hostapd
 PRODUCT_PACKAGES += hostapd_cli hostapd
