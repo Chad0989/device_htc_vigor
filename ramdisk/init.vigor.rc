@@ -2,9 +2,12 @@ import init.vigor.usb.rc
 
 on early-init
     export EXTERNAL_STORAGE /mnt/sdcard
+    export EXTERNAL_STORAGE /mnt/emmc
     mkdir /mnt/sdcard 0000 system system
+    mkdir /mnt/emmc 0000 system system
     # for backwards compatibility
     symlink /mnt/sdcard /sdcard
+    symlink /mnt/emmc /emmc
 
 on early-fs
     mkdir /system
