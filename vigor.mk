@@ -65,9 +65,6 @@ PRODUCT_COPY_FILES += \
 ## Misc
 PRODUCT_PACKAGES += gps.vigor Stk FileManager CellBroadcastReceiver
 
-# Hostapd
-PRODUCT_PACKAGES += hostapd_cli hostapd
-
 ## CM DSPManager
 PRODUCT_PACKAGES += DSPManager libcyanogen-dsp
 
