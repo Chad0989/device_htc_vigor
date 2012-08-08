@@ -38,8 +38,11 @@ TARGET_BOOTLOADER_BOARD_NAME := vigor
 BOARD_KERNEL_BASE      := 0x48800000
 BOARD_KERNEL_PAGE_SIZE := 00000800
 BOARD_KERNEL_CMDLINE   := console=ttyHSL3 androidboot.hardware=vigor no_console_suspend=1 
-TARGET_PREBUILT_KERNEL := device/htc/vigor/ramdisk/kernel
 COMMON_GLOBAL_CFLAGS   += -DQCOM_ROTATOR_KERNEL_FORMATS
+TARGET_KERNEL_CONFIG := vigor_aosp_defconfig
+TARGET_KERNEL_SOURCE := kernel/htc/vigor
+
+
 BOARD_USE_LEGACY_TOUCHSCREEN := true
 
 # RIL
