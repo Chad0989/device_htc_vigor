@@ -130,16 +130,6 @@ PRODUCT_LOCALES += en_US
 ## vold
 PRODUCT_COPY_FILES += device/htc/vigor/configs/vold.fstab:system/etc/vold.fstab
 
-## Kernel and modules
-ifeq ($(TARGET_PREBUILT_KERNEL),)
-LOCAL_KERNEL := device/htc/vigor/ramdisk/kernel
-else
-LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
-endif
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_KERNEL):kernel
-
 $(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
 
 # common msm8660 configs
