@@ -59,6 +59,7 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 2550136320
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_MAX_PARTITIONS := 38
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/usb_mass_storage/lun%d/file
 
 # Recovery
 BOARD_CUSTOM_GRAPHICS := ../../../device/htc/vigor/recovery/graphics.c
