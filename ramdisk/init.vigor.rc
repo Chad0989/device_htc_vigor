@@ -7,11 +7,16 @@ on early-init
     symlink /mnt/sdcard /sdcard
     symlink /mnt/emmc /emmc
 
-on early-fs
+on emmc-fs
     mkdir /system
     mkdir /data 0771 system system
     mkdir /cache 0771 system cache
     mkdir /devlog 0700 root root
+
+    mount ext4 /dev/block/mmcblk0p29 /system wait ro data=ordered noauto_da_alloc
+    mount ext4 /dev/block/mmcblk0p35 /data wait noatime nosuid nodev data=ordered noauto_da_alloc
+    mount ext4 /dev/block/mmcblk0p36 /cache wait noatime nosuid nodev data=ordered noauto_da_alloc
+    mount ext4 /dev/block/mmcblk0p30 /devlog wait noatime nosuid nodev data=ordered noauto_da_alloc
     
     # 8x60: mount radio partition and create links for modem/q6 firmwares
     rm /vendor
@@ -20,10 +25,12 @@ on early-fs
     mkdir /vendor/firmware      0771 system system
     mkdir /vendor/firmware/misc 0771 system system
     mkdir /vendor/firmware/adsp 0771 system system
-    wait /dev/block/mmcblk0p17
-    wait /dev/block/mmcblk0p21
-    mount vfat /dev/block/mmcblk0p17 /vendor/firmware/misc ro shortname=lower
-    mount vfat /dev/block/mmcblk0p21 /vendor/firmware/adsp ro shortname=lower
+    mkdir /vendor/firmware/misc_mdm 0771 system system
+
+    mount vfat /dev/block/mmcblk0p17 /vendor/firmware/misc wait ro shortname=lower
+    mount vfat /dev/block/mmcblk0p21 /vendor/firmware/adsp wait ro shortname=lower
+    mount vfat /dev/block/mmcblk0p18 /vendor/firmware/misc_mdm wait ro shortname=lower
+
     symlink /vendor/firmware/adsp/q6.b09 /vendor/firmware/q6.b09
     symlink /vendor/firmware/adsp/q6.b08 /vendor/firmware/q6.b08
     symlink /vendor/firmware/adsp/q6.b07 /vendor/firmware/q6.b07
@@ -47,9 +54,7 @@ on early-fs
     symlink /vendor/firmware/misc/modem.b01 /vendor/firmware/modem.b01
     symlink /vendor/firmware/misc/modem.b00 /vendor/firmware/modem.b00
     symlink /vendor/firmware/misc/modem.mdt /vendor/firmware/modem.mdt
-    mkdir /vendor/firmware/misc_mdm 0771 system system
 
-    mount vfat /dev/block/mmcblk0p18 /vendor/firmware/misc_mdm wait ro shortname=lower
     symlink /vendor/firmware/misc_mdm/image/amss.mbn /vendor/firmware/amss.mbn
     symlink /vendor/firmware/misc_mdm/image/dsp1.mbn /vendor/firmware/dsp1.mbn
     symlink /vendor/firmware/misc_mdm/image/dsp2.mbn /vendor/firmware/dsp2.mbn
@@ -61,12 +66,6 @@ on early-fs
     symlink /vendor/firmware/misc_mdm/image/htcssmem.mbn /vendor/firmware/htcssmem.mbn
 
     symlink /system/vendor/etc/audio_effects.conf /vendor/etc/audio_effects.conf
-
-    mount ext4 /dev/block/mmcblk0p29 /system wait ro data=ordered noauto_da_alloc
-    setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
-    mount ext4 /dev/block/mmcblk0p35 /data wait noatime nosuid nodev data=ordered noauto_da_alloc
-    mount ext4 /dev/block/mmcblk0p36 /cache wait noatime nosuid nodev data=ordered noauto_da_alloc
-    mount ext4 /dev/block/mmcblk0p30 /devlog wait noatime nosuid nodev data=ordered noauto_da_alloc
 
 on post-fs-data
     wait /dev/ttyHSL1
@@ -189,10 +188,6 @@ on init
     write /sys/module/lowmemorykiller/parameters/minfile 2048,3072,4096,6144,8192,12288
     write /sys/module/lowmemorykiller/parameters/check_filepages 1
 
-on early-boot
-    # set RLIMIT_MEMLOCK to 64MB
-    setrlimit 8 67108864 67108864
-
 on boot
     # allow interfaces to get v6 address when tethering is enabled
     write /proc/sys/net/ipv6/conf/rmnet0/accept_ra 2
@@ -310,7 +305,7 @@ service netsharing_pass /system/bin/netsharing net_pass on
     disabled
     oneshot
 
-service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p25 /dev/block/mmcblk0p26 /dev/block/mmcblk0p19
+service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p25 /dev/block/mmcblk0p26 /dev/block/mmcblk0p19 NULL /dev/block/mmcblk0p27 /dev/block/mmcblk0p28 /dev/block/mmcblk0p20
     class core
     user root
 
