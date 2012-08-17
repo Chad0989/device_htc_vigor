@@ -7,7 +7,7 @@ ro.sf.lcd_density = 320
 # RIL properties
 # cm props
 mobiledata.interfaces = rmnet0,rmnet_sdio0
-ro.telephony.ril_class = HTCQualcommRIL
+ro.telephony.ril_class = HTCVigorQualcommRIL
 ro.telephony.default_network = 8
 telephony.lteOnCdmaDevice = 1
 
@@ -74,7 +74,7 @@ persist.cne.be.wlan.sqi.max = 100
 ro.config.lte = true
 
 #device supports simultaneous 1x voice + LTE
-ro.ril.svlte1x = true
+ro.config.svlte1x = true
 
 gsm.sim.operator.alpha = Verizon
 gsm.sim.operator.numeric = 310012
@@ -132,7 +132,6 @@ ro.ril.enable.prl.recognition = 1
 #SIM
 ro.htc.device.slot1 = RUIM
 persist.radio.no_wait_for_card = 1
-keyguard.no_require_sim = true
 persist.radio.apm_sim_not_pwdn = 1
 
 # System prop for switching gps driver to qmi
@@ -150,12 +149,6 @@ persist.thermal.monitor = true
 # Set this value to force load 8k modem in release key
 # vigor must enable this value to enable 9kramdump
 ro.modem.load.release_key = true
-
-# support sdcard2
-ro.sdcard2 = 1
-
-# For internal fat file system
-ro.phone_fat = 1
 
 # UMS
 persist.sys.usb.config = mass_storage,adb

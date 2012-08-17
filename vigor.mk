@@ -14,13 +14,16 @@
 # limitations under the License.
 #
 
-## The gps config appropriate for this device
+# Overlays
+DEVICE_PACKAGE_OVERLAYS := device/htc/vigor/overlay
+
+# The gps config appropriate for this device
 PRODUCT_COPY_FILES += device/common/gps/gps.conf_US:system/etc/gps.conf
 
 # Get the sample verizon list of APNs
 PRODUCT_COPY_FILES := device/sample/etc/apns-conf_verizon.xml:system/etc/apns-conf.xml
 
-## recovery and custom charging
+# Recovery and custom charging
 PRODUCT_COPY_FILES += \
     device/htc/vigor/recovery/sbin/choice_fn:recovery/root/sbin/choice_fn \
     device/htc/vigor/recovery/sbin/power_test:recovery/root/sbin/power_test \
@@ -28,7 +31,7 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/recovery/sbin/detect_key:recovery/root/sbin/detect_key \
     device/htc/vigor/recovery/sbin/htcbatt:recovery/root/sbin/htcbatt
 
-## ramdisk stuffs
+# Ramdisk
 PRODUCT_COPY_FILES += \
     device/htc/vigor/ramdisk/init.vigor.rc:root/init.vigor.rc \
     device/htc/vigor/ramdisk/ueventd.vigor.rc:root/ueventd.vigor.rc \
@@ -43,10 +46,13 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/prebuilt/etc/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
     device/htc/vigor/prebuilt/etc/init.qcom.mdm_links.sh:system/etc/init.qcom.mdm_links.sh
 
-## (2) Also get non-open-source specific aspects if available
-$(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
+# Media
+PRODUCT_COPY_FILES += device/htc/vigor/configs/media_profiles.xml:system/etc/media_profiles.xml
 
-## Misc
+# Vold
+PRODUCT_COPY_FILES += device/htc/vigor/configs/vold.fstab:system/etc/vold.fstab
+
+# Misc
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.clientidbase=android-verizon \
     ro.com.google.locationfeatures=1 \
@@ -54,20 +60,17 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.lockprof.threshold=500 \
     dalvik.vm.dexopt-flags=m=y
 
-## Overlays
-DEVICE_PACKAGE_OVERLAYS += device/htc/vigor/overlay
-
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml
 
-## Misc
+# Misc
 PRODUCT_PACKAGES += gps.vigor Stk FileManager
 
-## CM DSPManager
+# CM DSPManager
 PRODUCT_PACKAGES += DSPManager libcyanogen-dsp
 
-## DSP Audio
+# DSP Audio
 PRODUCT_COPY_FILES += \
     device/htc/vigor/dsp/AdieHWCodec.csv:system/etc/AdieHWCodec.csv \
     device/htc/vigor/dsp/AIC3254_REG.csv:system/etc/AIC3254_REG.csv \
@@ -85,7 +88,7 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/dsp/soundimage/srs_geq10.cfg:system/etc/soundimage/srs_geq10.cfg \
     device/htc/vigor/dsp/soundimage/srs_global.cfg:system/etc/soundimage/srs_global.cfg
 
-## Keylayouts and Keychars
+# Keylayouts and Keychars
 PRODUCT_COPY_FILES += \
     device/htc/vigor/keychars/BT_HID.kcm.bin:system/usr/keychars/BT_HID.kcm.bin \
     device/htc/vigor/keychars/qwerty2.kcm.bin:system/usr/keychars/qwerty2.kcm.bin \
@@ -98,48 +101,36 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/keylayout/atmel-touchscreen.kl:system/usr/keylayout/atmel-touchscreen.kl \
     device/htc/vigor/prebuilt/atmel-touchscreen.idc:system/usr/idc/atmel-touchscreen.idc
 
-## Firmware
+# Firmware
 PRODUCT_COPY_FILES += \
     device/htc/vigor/firmware/default_bak.acdb:system/etc/firmware/default_bak.acdb \
     device/htc/vigor/firmware/vidc_1080p.fw:system/etc/firmware/vidc_1080p.fw \
     device/htc/vigor/firmware/leia_pfp_470.fw:system/etc/firmware/leia_pfp_470.fw \
     device/htc/vigor/firmware/leia_pm4_470.fw:system/etc/firmware/leia_pm4_470.fw 
 
-## Graphics
-PRODUCT_COPY_FILES += \
-    device/htc/vigor/configs/adreno_config.txt:system/etc/adreno_config.txt
-
-##  Wifi
-PRODUCT_COPY_FILES += \
-    device/htc/vigor/configs/wpa_supplicant.conf:/system/etc/wifi/wpa_supplicant.conf
-
-BOARD_WLAN_DEVICE_REV := bcm4330_b2
-$(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4330/device-bcm.mk)
+# Graphics
+PRODUCT_COPY_FILES += device/htc/vigor/configs/adreno_config.txt:system/etc/adreno_config.txt
 
 # QC thermald config
 PRODUCT_COPY_FILES += device/htc/vigor/prebuilt/thermald.conf:system/etc/thermald.conf
 
-## we have enough storage space to hold precise GC data
+#  Wifi
+PRODUCT_COPY_FILES += device/htc/vigor/configs/wpa_supplicant.conf:/system/etc/wifi/wpa_supplicant.conf
+
+BOARD_WLAN_DEVICE_REV := bcm4330_b2
+$(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4330/device-bcm.mk)
+
+
+# We have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-## device uses high-density artwork where available
+# Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 PRODUCT_LOCALES += en_US
 
-## vold
-PRODUCT_COPY_FILES += device/htc/vigor/configs/vold.fstab:system/etc/vold.fstab
-
+# Inherit configs
 $(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
-
-# common msm8660 configs
 $(call inherit-product, device/htc/msm8660-common/msm8660.mk)
-
-PRODUCT_COPY_FILES += \
-     device/htc/vigor/configs/media_profiles.xml:system/etc/media_profiles.xml
-
 $(call inherit-product, frameworks/base/build/phone-xhdpi-1024-dalvik-heap.mk)
 $(call inherit-product, build/target/product/full_base_telephony.mk)
-
-PRODUCT_NAME := htc_vigor
-PRODUCT_DEVICE := vigor

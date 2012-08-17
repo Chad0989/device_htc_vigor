@@ -1,8 +1,6 @@
 import init.vigor.usb.rc
 
 on early-init
-    export EXTERNAL_STORAGE /mnt/sdcard
-    export EXTERNAL_STORAGE /mnt/emmc
     mkdir /mnt/sdcard 0000 system system
     mkdir /mnt/emmc 0000 system system
     # for backwards compatibility
@@ -77,8 +75,6 @@ on post-fs-data
     # double check the perms and set owner
     chown root root /devlog
     chmod 0700 /devlog
-
-    remount rootfs rootfs / remount
 
     # wifi
     mkdir /data/misc/wifi 0770 wifi wifi
