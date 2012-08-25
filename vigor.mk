@@ -46,9 +46,6 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/prebuilt/etc/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
     device/htc/vigor/prebuilt/etc/init.qcom.mdm_links.sh:system/etc/init.qcom.mdm_links.sh
 
-# Media
-PRODUCT_COPY_FILES += device/htc/vigor/configs/media_profiles.xml:system/etc/media_profiles.xml
-
 # Vold
 PRODUCT_COPY_FILES += device/htc/vigor/configs/vold.fstab:system/etc/vold.fstab
 
