@@ -100,10 +100,7 @@ PRODUCT_COPY_FILES += \
 
 # Firmware
 PRODUCT_COPY_FILES += \
-    device/htc/vigor/firmware/default_bak.acdb:system/etc/firmware/default_bak.acdb \
-    device/htc/vigor/firmware/vidc_1080p.fw:system/etc/firmware/vidc_1080p.fw \
-    device/htc/vigor/firmware/leia_pfp_470.fw:system/etc/firmware/leia_pfp_470.fw \
-    device/htc/vigor/firmware/leia_pm4_470.fw:system/etc/firmware/leia_pm4_470.fw 
+    device/htc/vigor/firmware/default_bak.acdb:system/etc/firmware/default_bak.acdb
 
 # Graphics
 PRODUCT_COPY_FILES += device/htc/vigor/configs/adreno_config.txt:system/etc/adreno_config.txt
