@@ -64,26 +64,29 @@ PRODUCT_COPY_FILES += \
 # Misc
 PRODUCT_PACKAGES += gps.vigor Stk FileManager
 
-# CM DSPManager
-PRODUCT_PACKAGES += DSPManager libcyanogen-dsp
+# HTC BT Audio tune
+PRODUCT_COPY_FILES += device/htc/vigor/dsp/AudioBTID.csv:system/etc/AudioBTID.csv
 
-# DSP Audio
+# Sound DSP
 PRODUCT_COPY_FILES += \
     device/htc/vigor/dsp/AdieHWCodec.csv:system/etc/AdieHWCodec.csv \
+    device/htc/vigor/dsp/AdieHWCodec_BEATS_HW.csv:system/etc/AdieHWCodec_BEATS_HW.csv \
     device/htc/vigor/dsp/AIC3254_REG.csv:system/etc/AIC3254_REG.csv \
     device/htc/vigor/dsp/AIC3254_REG_DualMic.csv:system/etc/AIC3254_REG_DualMic.csv \
-    device/htc/vigor/dsp/AudioBTID.csv:system/etc/AudioBTID.csv \
     device/htc/vigor/dsp/CodecDSPID.txt:system/etc/CodecDSPID.txt \
-    device/htc/vigor/dsp/TPA2051_CFG.csv:system/etc/TPA2051_CFG.csv \
+    device/htc/vigor/dsp/TPA2051_CFG.csv:system/etc/TPA2051_CFG.csv
+
+# Sound Image DSP
+PRODUCT_COPY_FILES += \
     device/htc/vigor/dsp/soundimage/Sound_Original.txt:system/etc/soundimage/Sound_Original.txt \
+    device/htc/vigor/dsp/soundimage/srs_bypass.cfg:system/etc/soundimage/srs_bypass.cfg \
+    device/htc/vigor/dsp/soundimage/srs_geq10.cfg:system/etc/soundimage/srs_geq10.cfg \
+    device/htc/vigor/dsp/soundimage/srs_global.cfg:system/etc/soundimage/srs_global.cfg \
     device/htc/vigor/dsp/soundimage/srsfx_trumedia_51.cfg:system/etc/soundimage/srsfx_trumedia_51.cfg \
     device/htc/vigor/dsp/soundimage/srsfx_trumedia_movie.cfg:system/etc/soundimage/srsfx_trumedia_movie.cfg \
     device/htc/vigor/dsp/soundimage/srsfx_trumedia_music.cfg:system/etc/soundimage/srsfx_trumedia_music.cfg \
     device/htc/vigor/dsp/soundimage/srsfx_trumedia_music_wide.cfg:system/etc/soundimage/srsfx_trumedia_music_wide.cfg \
-    device/htc/vigor/dsp/soundimage/srsfx_trumedia_voice.cfg:system/etc/soundimage/srsfx_trumedia_voice.cfg \
-    device/htc/vigor/dsp/soundimage/srs_bypass.cfg:system/etc/soundimage/srs_bypass.cfg \
-    device/htc/vigor/dsp/soundimage/srs_geq10.cfg:system/etc/soundimage/srs_geq10.cfg \
-    device/htc/vigor/dsp/soundimage/srs_global.cfg:system/etc/soundimage/srs_global.cfg
+    device/htc/vigor/dsp/soundimage/srsfx_trumedia_voice.cfg:system/etc/soundimage/srsfx_trumedia_voice.cfg
 
 # Keylayouts and Keychars
 PRODUCT_COPY_FILES += \
