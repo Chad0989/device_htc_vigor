@@ -119,7 +119,7 @@ htc.audio.alt.enable = 0
 htc.audio.hac.enable = 0
 
 # wifi
-wifi.interface = eth0
+wifi.interface = wlan0
 
 # data module
 ro.use_data_netmgrd = true

@@ -29,15 +29,13 @@ BOARD_KERNEL_BASE      := 0x48800000
 BOARD_KERNEL_PAGE_SIZE := 2048
 BOARD_KERNEL_CMDLINE   := console=ttyHSL3 androidboot.hardware=vigor no_console_suspend=1 
 COMMON_GLOBAL_CFLAGS   += -DQCOM_ROTATOR_KERNEL_FORMATS
+# Build the kernel
+TARGET_KERNEL_VERSION := 3.0
 TARGET_KERNEL_CONFIG   := vigor_aosp_defconfig
-TARGET_KERNEL_SOURCE   := kernel/htc/vigor
-BOARD_USE_LEGACY_TOUCHSCREEN := true
+TARGET_KERNEL_SOURCE   := kernel/htc/vigor-$(TARGET_KERNEL_VERSION)
 
 # RIL
 BOARD_PROVIDES_LIBRIL := true
-
-#QCOM Display
-TARGET_USES_OVERLAY := false
 
 # Camera
 BOARD_HAVE_HTC_FFC := true
@@ -52,7 +50,7 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 2550136320
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_MAX_PARTITIONS := 38
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/usb_mass_storage/lun%d/file
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun%d/file
 
 # GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := vigor
