@@ -236,7 +236,6 @@ service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant -Dnl802
     disabled
     oneshot
 
-
 service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
     class main
     disabled
@@ -257,15 +256,6 @@ service iprenew_p2p /system/bin/dhcpcd -n
 	disabled
 	oneshot
 
-# Make sure we startup btld before hcid
-# Set target address to emulator host loopback IF
-# Limit baudrate to 460800 to ensure reliable uart operation
-service btld /system/bin/btld -lpm 1 -hb 3000000
-    user root
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
 # for USB internet sharing
 service udhcpd /system/bin/udhcpd
 	disabled
@@ -282,6 +272,14 @@ service netsharing_off /system/bin/netsharing net off
 service netsharing_pass /system/bin/netsharing net_pass on
 	disabled
 	oneshot
+
+service hciattach /system/bin/brcm_patchram_plus --enable_hci --enable_lpm \
+   --no2bytes --tosleep=50000 \
+   --use_baudrate_for_download --baudrate 3000000 --patchram /etc/firmware/bcm4330B1.hcd /dev/ttyHS0    
+    class main
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
 
 service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p25 /dev/block/mmcblk0p26 /dev/block/mmcblk0p19 NULL /dev/block/mmcblk0p27 /dev/block/mmcblk0p28 /dev/block/mmcblk0p20
     class core
@@ -339,11 +337,6 @@ service htcbatt /system/bin/htcbatt
     class late_start
     user root
 
-service mpdecision /system/bin/mpdecision --Nw 5.4 --Ts 350 --no_sleep --avg_comp --single_core_while_panel_off
-    class main
-    user root
-    disabled
-
 service thermald /system/bin/thermald
     class main
     user root
@@ -352,7 +345,6 @@ service thermald /system/bin/thermald
 on property:init.svc.bootanim=stopped
     start qcom-post-boot
     start thermald
-    start mpdecision
 
 service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
     user root

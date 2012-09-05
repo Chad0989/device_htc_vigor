@@ -12,8 +12,10 @@
 /dev/kgsl-2d0             0666   root       root
 /dev/kgsl-2d1             0666   root       root
 
+/dev/ttyMSM0              0600   bluetooth  bluetooth
 /dev/ttyHS0               0600   bluetooth  bluetooth
 /dev/ttyGS0               0660   system     system
+/dev/uinput               0660   system     bluetooth
 /dev/sdio_tty_ciq_00      0660   system     system
 /dev/msm_rotator          0660   system     graphics
 /dev/pmem_audio           0660   system     audio
