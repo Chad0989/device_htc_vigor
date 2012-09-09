@@ -95,6 +95,20 @@ on init
     symlink /mnt/sdcard/ext_sd /sdcard2
 
 on boot
+    # bluetooth power up/down interface
+    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
+    chown system system /sys/module/sco/parameters/disable_esco
+    chmod 0660 /sys/module/bluetooth_power/parameters/power
+    chmod 0660 /sys/class/rfkill/rfkill0/state
+    chmod 0660 /proc/bluetooth/sleep/proto
+    chown bluetooth bluetooth /dev/ttyHS0
+    chmod 0660 /dev/ttyHS0
+    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
+    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
+
 # +HTC_RIL: from QCT Fusion
     mkdir /data/radio 0770 radio radio
     chown radio system /sys/module/smd_rpcrouter/parameters/debug_mask
@@ -115,11 +129,6 @@ on boot
     mkdir /data/misc/gpsone_d 0770 system qcom_oncrpc
 #   chown system system /system/bin/gpsone_daemon
 # I-Mz add for SVLTE GPS daemon and related folder from QCT fusion --
-
-    # bluetooth power up/down interface
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
-    chmod 0660                /sys/class/rfkill/rfkill0/state
     
     # Widevine DRM
 	chown drm system /dev/htcdrm
@@ -277,14 +286,6 @@ service netsharing_pass /system/bin/netsharing net_pass on
 	disabled
 	oneshot
 
-service hciattach /system/bin/brcm_patchram_plus --enable_hci --enable_lpm \
-   --no2bytes --tosleep=50000 \
-   --use_baudrate_for_download --baudrate 3000000 --patchram /etc/firmware/bcm4330B1.hcd /dev/ttyHS0    
-    class main
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-
 service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p25 /dev/block/mmcblk0p26 /dev/block/mmcblk0p19 NULL /dev/block/mmcblk0p27 /dev/block/mmcblk0p28 /dev/block/mmcblk0p20
     class core
     user root
@@ -369,6 +370,12 @@ service htc_ebdlogd_rel /system/bin/htc_ebdlogd -s -k
 
 service tpd /sbin/tpd
     user root
+
+service hciattach /system/bin/init.qcom.bt.sh
+    class main
+    #user bluetooth
+    group bluetooth net_bt_admin
+    disabled
 
 on property:ro.build.tags=test-keys
     start htc_ebdlogd
