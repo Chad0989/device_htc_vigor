@@ -1,3 +1,5 @@
+import init.vigor.usb.rc
+
 on early-fs
     mkdir /system
     mkdir /data 0771 system system
@@ -62,6 +64,8 @@ on post-fs
     wait /dev/ttyHSL1
     mkdir /data/qcks 0770 system system
 
+on post-fs-data
+    chown system system /sys/class/graphics/fb0/ratelimit
 
 on early-init
     mkdir /mnt/sdcard 0000 system system
