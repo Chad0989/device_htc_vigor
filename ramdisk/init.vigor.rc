@@ -94,20 +94,10 @@ on init
 
     symlink /mnt/sdcard/ext_sd /sdcard2
 
-on boot
     # bluetooth power up/down interface
-    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
-    chown system system /sys/module/sco/parameters/disable_esco
-    chmod 0660 /sys/module/bluetooth_power/parameters/power
-    chmod 0660 /sys/class/rfkill/rfkill0/state
-    chmod 0660 /proc/bluetooth/sleep/proto
-    chown bluetooth bluetooth /dev/ttyHS0
-    chmod 0660 /dev/ttyHS0
-    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
-    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
+    chmod 0660                /sys/class/rfkill/rfkill0/state
 
     # bluetooth MAC address programming
     chown bluetooth bluetooth /sys/module/htc_bdaddress/parameters/bdaddress
@@ -179,9 +169,6 @@ on boot
 	chown radio radio /sys/module/htc_battery_8x60/parameters/phone_call
 	chmod 0660 /sys/module/htc_battery_8x60/parameters/phone_call
 
-    # Load bcmdhd.ko while booting
-    insmod /system/lib/modules/bcmdhd.ko
-
 # HTC SSD Peripheral UI - BEGIN
     chown system system /sys/class/leds/red/brightness
     chown system system /sys/class/leds/red/blink
@@ -234,6 +221,10 @@ on boot
 
 # for bridgemgr to inform the USB driver of the correct transport
     chown radio radio /sys/class/android_usb/f_rmnet/transport
+
+on boot
+# Load bcmdhd.ko while booting
+insmod /system/lib/modules/bcmdhd.ko
 
 # Force loading of modem and Q6 images
 service load-modem /system/bin/load-modem.sh
@@ -360,12 +351,6 @@ service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
     disabled
     oneshot
 
-service htc_ebdlogd /system/bin/htc_ebdlogd -s -k -P 7
-    user root
-    disabled
-    oneshot
-    ioprio idle 0
-
 service htc_ebdlogd_rel /system/bin/htc_ebdlogd -s -k
     user root
     disabled
@@ -375,14 +360,11 @@ service htc_ebdlogd_rel /system/bin/htc_ebdlogd -s -k
 service tpd /sbin/tpd
     user root
 
-service hciattach /system/bin/init.qcom.bt.sh
+service hciattach /system/bin/brcm_patchram_plus --no2bytes --enable_hci \
+    --tosleep 50000 --baudrate 3000000 --use_baudrate_for_download \
+    --patchram /system/etc/firmware/BCM4330B1_002.001.003.0550.0568.hcd /dev/ttyHS0
     class main
-    #user bluetooth
+    user bluetooth
     group bluetooth net_bt_admin
     disabled
-
-on property:ro.build.tags=test-keys
-    start htc_ebdlogd
-
-on property:ro.build.tags=release-keys
-    start htc_ebdlogd_rel
+    oneshot

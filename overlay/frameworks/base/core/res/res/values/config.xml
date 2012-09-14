@@ -173,7 +173,6 @@
          bluetooth interfaces.  If the device doesn't want to support tethering over bluetooth this
          should be empty. -->
     <string-array translatable="false" name="config_tether_bluetooth_regexs">
-        <item>"tap_brcm_bt_pan"</item>
         <item>"bnep\\d"</item>
     </string-array>
 
