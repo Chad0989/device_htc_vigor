@@ -68,10 +68,6 @@ PRODUCT_PACKAGES += gps.vigor Stk FileManager
 # HTC BT Audio tune
 PRODUCT_COPY_FILES += device/htc/vigor/dsp/AudioBTID.csv:system/etc/AudioBTID.csv
 
-# Bluetooth
-PRODUCT_COPY_FILES += \
-    device/htc/vigor/prebuilt/etc/init.qcom.bt.sh:system/bin/init.qcom.bt.sh \
-
 PRODUCT_PACKAGES += \
     hcitool \
     hciconfig \
