@@ -94,6 +94,7 @@ on init
 
     symlink /mnt/sdcard/ext_sd /sdcard2
 
+on boot
     # bluetooth power up/down interface
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
@@ -222,9 +223,8 @@ on init
 # for bridgemgr to inform the USB driver of the correct transport
     chown radio radio /sys/class/android_usb/f_rmnet/transport
 
-on boot
 # Load bcmdhd.ko while booting
-insmod /system/lib/modules/bcmdhd.ko
+    insmod /system/lib/modules/bcmdhd.ko
 
 # Force loading of modem and Q6 images
 service load-modem /system/bin/load-modem.sh
