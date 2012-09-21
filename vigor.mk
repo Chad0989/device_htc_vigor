@@ -61,6 +61,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml
+    frameworks/base/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
 
 # Misc
 PRODUCT_PACKAGES += gps.vigor Stk FileManager
@@ -71,6 +72,11 @@ PRODUCT_COPY_FILES += device/htc/vigor/dsp/AudioBTID.csv:system/etc/AudioBTID.cs
 PRODUCT_PACKAGES += \
     hcitool \
     hciconfig \
+
+## cm dsp manager
+PRODUCT_PACKAGES += \
+    DSPManager \
+    libcyanogen-dsp
 
 # Sound DSP
 PRODUCT_COPY_FILES += \

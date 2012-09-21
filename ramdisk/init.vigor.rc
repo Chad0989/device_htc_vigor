@@ -104,6 +104,9 @@ on boot
     chown bluetooth bluetooth /sys/module/htc_bdaddress/parameters/bdaddress
     setprop ro.bt.bdaddr_path /sys/module/htc_bdaddress/parameters/bdaddress
 
+# symlink for HDMI
+    symlink /dev/graphics/fb1 /dev/graphics/hdmi
+
 # +HTC_RIL: from QCT Fusion
     mkdir /data/radio 0770 radio radio
     chown radio system /sys/module/smd_rpcrouter/parameters/debug_mask
@@ -331,7 +334,11 @@ service netmgrd /system/bin/netmgrd
 
 service hdmid /system/bin/hdmid
     class late_start
-    socket displayd stream 0660 root system graphics
+    socket hdmid stream 0660 root system graphics
+    disabled
+
+on property:ro.hdmi.enable=true
+    start hdmid
 
 service htcbatt /system/bin/htcbatt
     class late_start
