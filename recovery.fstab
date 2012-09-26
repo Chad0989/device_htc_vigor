@@ -8,4 +8,4 @@
 /sdcard		vfat		/dev/block/mmcblk1p1
 /system         ext4            /dev/block/mmcblk0p29
 /misc           emmc            /dev/block/mmcblk0p24
-/internal_sdcard vfat           /dev/block/mmcblk0p37
+/internal_sdcard vfat           /dev/block/mmcblk0p38
