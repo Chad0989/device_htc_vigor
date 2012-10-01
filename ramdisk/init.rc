@@ -473,6 +473,12 @@ service dumpstate /system/bin/dumpstate -s
     disabled
     oneshot
 
+service userinit /system/xbin/busybox run-parts /system/etc/init.d
+    oneshot
+    class late_start
+    user root
+    group root
+
 service post-boot /system/bin/sh /system/etc/init.post_boot.sh
     user root
     oneshot
