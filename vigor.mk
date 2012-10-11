@@ -124,8 +124,6 @@ PRODUCT_COPY_FILES += device/htc/vigor/prebuilt/thermald.conf:system/etc/thermal
 
 #  Wifi
 PRODUCT_COPY_FILES += device/htc/vigor/configs/wpa_supplicant.conf:/system/etc/wifi/wpa_supplicant.conf
-BOARD_WLAN_DEVICE_REV := bcm4330_b2
-$(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4330/device-bcm.mk)
 
 # We have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
