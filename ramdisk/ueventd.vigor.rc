@@ -1,5 +1,10 @@
 /dev/rtc0                 0600   system     system
 
+/dev/mpu                  0664   system     system
+/dev/mpuirq               0664   system     system
+/dev/timerirq             0664   system     system
+/dev/simlock              0660   radio      radio
+
 # the DIAG device node is world writable/readable.
 /dev/diag                 0666   root       root
 
