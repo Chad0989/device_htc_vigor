@@ -132,8 +132,6 @@ PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 PRODUCT_LOCALES += en_US
 
-TARGET_NO_HW_VSYNC := false
-
 # Inherit configs
 $(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
 $(call inherit-product, device/htc/msm8660-common/msm8660.mk)
