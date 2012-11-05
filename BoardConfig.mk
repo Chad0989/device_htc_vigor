@@ -1,4 +1,4 @@
-# Copyright (C) 2012 The Android Open Source Project
+# Copyright (C) 2009 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Skip droiddoc build to save build time
-BOARD_SKIP_ANDROID_DOC_BUILD := true
+#
+# This file sets variables that control the way modules are built
+# thorughout the system. It should not be used to conditionally
+# disable makefiles (the proper mechanism to control what gets
+# included in a build is to use PRODUCT_PACKAGES in a product
+# definition file).
+#
 
-# inherit from the proprietary version
--include vendor/htc/vigor/BoardConfigVendor.mk
+# WARNING: This line must come *before* including the proprietary
+# variant, so that it gets overwritten by the parent (which goes
+# against the traditional rules of inheritance).
 
 # inherit from common msm8660
 -include device/htc/msm8660-common/BoardConfigCommon.mk
@@ -25,24 +31,40 @@ BOARD_SKIP_ANDROID_DOC_BUILD := true
 TARGET_BOOTLOADER_BOARD_NAME := vigor
 
 # Kernel
-BOARD_KERNEL_BASE      := 0x48800000
+BOARD_KERNEL_BASE := 0x48800000
 BOARD_KERNEL_PAGE_SIZE := 2048
-BOARD_KERNEL_CMDLINE   := console=ttyHSL3 androidboot.hardware=vigor no_console_suspend=1 
-COMMON_GLOBAL_CFLAGS   += -DQCOM_ROTATOR_KERNEL_FORMATS
-# Build the kernel
+BOARD_KERNEL_CMDLINE := console=ttyHSL3 androidboot.hardware=vigor no_console_suspend=1
 TARGET_KERNEL_VERSION := 3.0
-TARGET_KERNEL_CONFIG   := vigor_aosp_defconfig
-TARGET_KERNEL_SOURCE   := kernel/htc/vigor-$(TARGET_KERNEL_VERSION)
+TARGET_KERNEL_CONFIG := vigor_aosp_defconfig
+TARGET_KERNEL_SOURCE := kernel/htc/vigor-$(TARGET_KERNEL_VERSION)
+
+# Boot animation
+TARGET_SCREEN_HEIGHT := 1280
+TARGET_SCREEN_WIDTH := 720
+
+# Graphics / Video
+COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=60 -DNO_QCOM_MVS -DNO_HW_VSYNC -DQCOM_ICS_COMPAT
+
+# GPS
+BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := vigor
 
 # RIL
-BOARD_PROVIDES_LIBRIL := true
+BOARD_USES_LEGACY_RIL := true
 
-# Camera
-BOARD_HAVE_HTC_FFC := true
-COMMON_GLOBAL_CFLAGS += -DNO_UPDATE_PREVIEW
+# WiFi
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+WPA_SUPPLICANT_VERSION := VER_0_8_X
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
+BOARD_HOSTAPD_DRIVER := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_bcmdhd
+BOARD_WLAN_DEVICE := bcmdhd
+WIFI_DRIVER_FW_PATH_PARAM := "/sys/module/bcmdhd/parameters/firmware_path"
+WIFI_DRIVER_FW_PATH_STA := "/system/vendor/firmware/fw_bcmdhd.bin"
+WIFI_DRIVER_FW_PATH_P2P := "/system/vendor/firmware/fw_bcmdhd_p2p.bin"
+WIFI_DRIVER_FW_PATH_AP := "/system/vendor/firmware/fw_bcmdhd_apsta.bin"
+BOARD_WLAN_DEVICE_REV            := bcm4330_b2
 
 # Filesystem
-BOARD_USES_MMCUTILS := true
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16776192
@@ -53,6 +75,3 @@ BOARD_SUPPRESS_EMMC_WIPE := true
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_MAX_PARTITIONS := 38
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun%d/file
-
-# GPS
-BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := vigor

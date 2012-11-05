@@ -33,6 +33,8 @@ PRODUCT_COPY_FILES += \
 
 # Ramdisk
 PRODUCT_COPY_FILES += \
+    device/htc/vigor/ramdisk/init:root/init \
+    device/htc/vigor/ramdisk/init.rc:root/init.rc \
     device/htc/vigor/ramdisk/init.vigor.rc:root/init.vigor.rc \
     device/htc/vigor/ramdisk/ueventd.vigor.rc:root/ueventd.vigor.rc \
     device/htc/vigor/ramdisk/init.vigor.usb.rc:root/init.vigor.usb.rc \
@@ -121,8 +123,12 @@ PRODUCT_COPY_FILES += device/htc/vigor/configs/adreno_config.txt:system/etc/adre
 # QC thermald config
 PRODUCT_COPY_FILES += device/htc/vigor/prebuilt/thermald.conf:system/etc/thermald.conf
 
-#  Wifi
-PRODUCT_COPY_FILES += device/htc/vigor/configs/wpa_supplicant.conf:/system/etc/wifi/wpa_supplicant.conf
+PRODUCT_PROPERTY_OVERRIDES := \
+wifi.interface=wlan0
+
+BOARD_WLAN_DEVICE_REV := bcm4330_b2
+WIFI_BAND := 802_11_ABG
+$(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4330/device-bcm.mk)
 
 # We have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
