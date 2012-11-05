@@ -68,14 +68,14 @@ on post-fs-data
     chown system system /sys/class/graphics/fb0/ratelimit
 
 on early-init
-    mkdir /storage 0050 system sdcard_r
-    mkdir /storage/sdcard0 0000 system system
-    
+    mkdir /mnt/sdcard 0000 system system
+    mkdir /mnt/emmc 0000 system system
     # for backwards compatibility
-    symlink /mnt/sdcard0 /sdcard
-    symlink /mnt/sdcard0 /mnt/sdcard
+    symlink /mnt/sdcard /sdcard
+    symlink /mnt/emmc /emmc
 
-    export EXTERNAL_STORAGE /storage/sdcard0
+    export EXTERNAL_STORAGE /mnt/sdcard
+    export SECONDARY_STORAGE /mnt/emmc
 
     device /dev/block/mmcblk0p16 0460 radio diag
 
