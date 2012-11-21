@@ -85,6 +85,9 @@ gsm.operator.iso-country = us
 ro.cdma.home.operator.alpha = Verizon
 ro.cdma.home.operator.numeric = 310012
 
+# Device needs to get CDMA subscription when RUIM is ready
+ro.cdma.subscribe_on_ruim_ready = true
+
 # For Verizon data retry configuration
 ro.cdma.data_retry_config = max_retries=infinite,0,0,60000,120000,480000,900000
 
