@@ -70,7 +70,7 @@ PRODUCT_PACKAGES += gps.vigor Stk FileManager
 # Audio/Video codecs
 PRODUCT_COPY_FILES += \
     device/htc/msm8660-common/configs/media_codecs.xml:system/etc/media_codecs.xml \
-    device/htc/vigor/configs/media_profiles.xml:system/etc/media_profiles.xml
+    device/htc/msm8660-common/configs/media_profiles.xml:system/etc/media_profiles.xml
 
 # HTC BT Audio tune
 PRODUCT_COPY_FILES += device/htc/vigor/dsp/AudioBTID.csv:system/etc/AudioBTID.csv

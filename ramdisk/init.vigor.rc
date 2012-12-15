@@ -365,6 +365,11 @@ service wpa_supplicant /system/bin/wpa_supplicant -Dnl80211 -iwlan0 -c /data/mis
     disabled
     oneshot
     
+service qcamerasvr /system/bin/mm-qcamera-daemon
+    class main
+    user system
+    group system camera inet
+
 service thermald /system/bin/thermald
     class main
     user root
