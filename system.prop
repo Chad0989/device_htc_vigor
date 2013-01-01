@@ -7,7 +7,7 @@ ro.sf.lcd_density = 320
 # RIL properties
 # cm props
 mobiledata.interfaces = rmnet0,rmnet_sdio0
-ro.telephony.ril_class = HTCQualcommRIL
+ro.telephony.ril_class = HTCVigorQualcommRIL
 ro.telephony.default_network = 8
 telephony.lteOnCdmaDevice = 1
 
@@ -152,3 +152,4 @@ ro.modem.load.release_key = true
 
 # UMS
 persist.sys.usb.config = mass_storage,adb
+ro.vold.umsdirtyratio=50

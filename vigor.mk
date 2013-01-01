@@ -23,7 +23,7 @@ PRODUCT_COPY_FILES := device/common/gps/gps.conf_US:system/etc/gps.conf
 # Get the sample verizon list of APNs
 PRODUCT_COPY_FILES += device/sample/etc/apns-conf_verizon.xml:system/etc/apns-conf.xml
 
-# Recovery and custom charging
+## recovery and custom charging
 PRODUCT_COPY_FILES += \
     device/htc/vigor/recovery/sbin/choice_fn:recovery/root/sbin/choice_fn \
     device/htc/vigor/recovery/sbin/power_test:recovery/root/sbin/power_test \
@@ -33,15 +33,10 @@ PRODUCT_COPY_FILES += \
 
 # Ramdisk
 PRODUCT_COPY_FILES += \
-    device/htc/vigor/ramdisk/init:root/init \
-    device/htc/vigor/ramdisk/init.rc:root/init.rc \
+    device/htc/vigor/ramdisk/fstab.vigor:root/fstab.vigor \
     device/htc/vigor/ramdisk/init.vigor.rc:root/init.vigor.rc \
     device/htc/vigor/ramdisk/ueventd.vigor.rc:root/ueventd.vigor.rc \
-    device/htc/vigor/ramdisk/init.vigor.usb.rc:root/init.vigor.usb.rc \
-    device/htc/vigor/ramdisk/sbin/gzip_recvy:root/sbin/gzip_recvy \
-    device/htc/vigor/ramdisk/sbin/htc_ebdlogd_recvy:root/sbin/htc_ebdlogd_recvy \
-    device/htc/vigor/ramdisk/sbin/logcat2_recvy:root/sbin/logcat2_recvy \
-    device/htc/vigor/ramdisk/sbin/mfgsrv:root/sbin/mfgsrv
+    device/htc/vigor/ramdisk/init.vigor.usb.rc:root/init.vigor.usb.rc
     
 # QCOM
 PRODUCT_COPY_FILES += \

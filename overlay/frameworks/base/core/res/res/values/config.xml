@@ -21,10 +21,6 @@
      for different hardware and product builds. -->
 <resources>
 
-    <!-- Boolean indicating if current platform supports quick switch-on/off of
-	Bluetooth module -->
-    <bool name="config_bluetooth_adapter_quick_switch">false</bool>
-
     <!-- Default color for notification LED is green. -->
     <color name="config_defaultNotificationColor">#ff00ff00</color>
 
@@ -49,9 +45,6 @@
     <!-- Flag indicating whether we should enable the automatic brightness in Settings.
          config_hardware_automatic_brightness_available is not set, so we will use software implementation -->
     <bool name="config_automatic_brightness_available">true</bool>
-
-    <!-- Needed for capacitive buttons to work without toggling auto-brightness. -->
-    <bool name="config_autoBrightnessButtonKeyboard">false</bool>
 
     <!-- Array of light sensor LUX values to define our levels for auto backlight brightness support.
          The N entries of this array define N + 1 zones as follows:
@@ -101,7 +94,7 @@
         <item>255</item>
         <item>255</item>
         <item>255</item>
-        <item>-1</item>
+        <item>0</item>
         <item>0</item>
         <item>0</item>
         <item>0</item>
@@ -118,7 +111,7 @@
         <item>255</item>
         <item>255</item>
         <item>255</item>
-        <item>-1</item>
+        <item>0</item>
         <item>0</item>
         <item>0</item>
         <item>0</item>
