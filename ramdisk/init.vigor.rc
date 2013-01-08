@@ -88,6 +88,8 @@ on emmc-fs
     mkdir /vendor/etc 0771 system system
     symlink /system/vendor/etc/audio_effects.conf /vendor/etc/audio_effects.conf
 
+    symlink /system/vendor/lib /vendor/lib
+
 on post-fs-data
     # double check the perms and set owner
     chown root root /devlog
