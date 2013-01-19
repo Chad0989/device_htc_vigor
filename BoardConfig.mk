@@ -51,6 +51,7 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := vigor
 
 # RIL
 # BOARD_USES_LEGACY_RIL := true
+BOARD_RIL_CLASS := "../../../device/htc/vigor/ril/"
 
 # WiFi
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
