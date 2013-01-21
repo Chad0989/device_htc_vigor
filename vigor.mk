@@ -18,7 +18,7 @@
 DEVICE_PACKAGE_OVERLAYS := device/htc/vigor/overlay
 
 # The gps config appropriate for this device
-PRODUCT_COPY_FILES := device/common/gps/gps.conf_US:system/etc/gps.conf
+PRODUCT_COPY_FILES := device/common/gps/gps.conf_US_SUPL:system/etc/gps.conf
 
 # Get the sample verizon list of APNs
 PRODUCT_COPY_FILES += device/sample/etc/apns-conf_verizon.xml:system/etc/apns-conf.xml
