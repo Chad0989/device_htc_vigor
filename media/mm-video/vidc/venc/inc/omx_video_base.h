@@ -41,7 +41,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //                             Include Files
 //////////////////////////////////////////////////////////////////////////////
 
-#include<stdlib.h>
+#define LOG_TAG "OMX-VENC-720p"
+#include <stdlib.h>
 #include <stdio.h>
 #include <sys/mman.h>
 #ifdef _ANDROID_
@@ -59,8 +60,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "omx_video_common.h"
 #include "extra_data_handler.h"
 #include <linux/videodev2.h>
-#include <dlfcn.h>
-#include "C2DColorConverter.h"
 
 #ifdef _ANDROID_
 using namespace android;
@@ -73,7 +72,6 @@ public:
 };
 
 #include <utils/Log.h>
-#define LOG_TAG "OMX-VENC-720p"
 #ifdef ENABLE_DEBUG_LOW
 #define DEBUG_PRINT_LOW ALOGV
 #else
@@ -96,9 +94,19 @@ public:
 #define DEBUG_PRINT_ERROR
 #endif // _ANDROID_
 
+#ifdef _MSM8974_
+#define DEBUG_PRINT_LOW
+#define DEBUG_PRINT_HIGH printf
+#define DEBUG_PRINT_ERROR printf
+#endif
+
 #ifdef USE_ION
     static const char* MEM_DEVICE = "/dev/ion";
+    #ifdef MAX_RES_720P
+    #define MEM_HEAP_ID ION_CAMERA_HEAP_ID
+    #else
     #define MEM_HEAP_ID ION_CP_MM_HEAP_ID
+    #endif
 #elif MAX_RES_720P
 static const char* MEM_DEVICE = "/dev/pmem_adsp";
 #elif MAX_RES_1080P_EBI
@@ -151,36 +159,11 @@ class omx_video: public qc_omx_component
 {
 protected:
 #ifdef _ANDROID_ICS_
+  bool get_syntaxhdr_enable;
   bool meta_mode_enable;
-  bool c2d_opened;
   encoder_media_buffer_type meta_buffers[MAX_NUM_INPUT_BUFFERS];
-  OMX_BUFFERHEADERTYPE *opaque_buffer_hdr[MAX_NUM_INPUT_BUFFERS];
+  OMX_BUFFERHEADERTYPE meta_buffer_hdr[MAX_NUM_INPUT_BUFFERS];
   bool mUseProxyColorFormat;
-  OMX_BUFFERHEADERTYPE  *psource_frame;
-  OMX_BUFFERHEADERTYPE  *pdest_frame;
-  bool secure_session;
-  int secure_color_format;
-  class omx_c2d_conv {
-  public:
-    omx_c2d_conv();
-    ~omx_c2d_conv();
-	bool init();
-	bool open(unsigned int height,unsigned int width,
-			  ColorConvertFormat src,
-			  ColorConvertFormat dest);
-	bool convert(int src_fd, void *src_viraddr,
-				 int dest_fd,void *dest_viraddr);
-	bool get_buffer_size(int port,unsigned int &buf_size);
-	int get_src_format();
-	void close();
-  private:
-     C2DColorConverterBase *c2dcc;
-    void *mLibHandle;
-	ColorConvertFormat src_format;
-    createC2DColorConverter_t *mConvertOpen;
-    destroyC2DColorConverter_t *mConvertClose;
-  };
-  omx_c2d_conv c2d_conv;
 #endif
 public:
   omx_video();  // constructor
@@ -219,7 +202,6 @@ public:
   virtual bool dev_loaded_stop(void) = 0;
   virtual bool dev_loaded_start_done(void) = 0;
   virtual bool dev_loaded_stop_done(void) = 0;
-  virtual bool is_secure_session(void) = 0;
 #ifdef _ANDROID_ICS_
   void omx_release_meta_buffer(OMX_BUFFERHEADERTYPE *buffer);
 #endif
@@ -397,8 +379,7 @@ public:
     OMX_COMPONENT_GENERATE_PAUSE_DONE = 0xE,
     OMX_COMPONENT_GENERATE_RESUME_DONE = 0xF,
     OMX_COMPONENT_GENERATE_STOP_DONE = 0x10,
-    OMX_COMPONENT_GENERATE_HARDWARE_ERROR = 0x11,
-    OMX_COMPONENT_GENERATE_ETB_OPQ = 0x12
+    OMX_COMPONENT_GENERATE_HARDWARE_ERROR = 0x11
   };
 
   struct omx_event
@@ -437,8 +418,7 @@ public:
                                       OMX_PTR              appData,
                                       OMX_U32              bytes);
 #ifdef _ANDROID_ICS_
-  OMX_ERRORTYPE allocate_input_meta_buffer(OMX_HANDLETYPE       hComp,
-                                      OMX_BUFFERHEADERTYPE **bufferHdr,
+  OMX_ERRORTYPE allocate_input_meta_buffer(OMX_BUFFERHEADERTYPE **bufferHdr,
                                       OMX_PTR              appData,
                                       OMX_U32              bytes);
 #endif
@@ -469,15 +449,9 @@ public:
 
   OMX_ERRORTYPE fill_buffer_done(OMX_HANDLETYPE hComp,
                                  OMX_BUFFERHEADERTYPE * buffer);
-  OMX_ERRORTYPE empty_this_buffer_proxy(OMX_HANDLETYPE hComp,
+  OMX_ERRORTYPE empty_this_buffer_proxy(OMX_HANDLETYPE       hComp,
                                         OMX_BUFFERHEADERTYPE *buffer);
-  OMX_ERRORTYPE empty_this_buffer_opaque(OMX_HANDLETYPE hComp,
-                                  OMX_BUFFERHEADERTYPE *buffer);
-  OMX_ERRORTYPE push_input_buffer(OMX_HANDLETYPE hComp);
-  OMX_ERRORTYPE convert_queue_buffer(OMX_HANDLETYPE hComp,
-     struct pmem &Input_pmem_info,unsigned &index);
-  OMX_ERRORTYPE queue_meta_buffer(OMX_HANDLETYPE hComp,
-     struct pmem &Input_pmem_info);
+
   OMX_ERRORTYPE fill_this_buffer_proxy(OMX_HANDLETYPE       hComp,
                                        OMX_BUFFERHEADERTYPE *buffer);
   bool release_done();
@@ -553,17 +527,14 @@ public:
   OMX_VIDEO_PARAM_INTRAREFRESHTYPE m_sIntraRefresh;
   OMX_U32 m_sExtraData;
   OMX_U32 m_sDebugSliceinfo;
-  OMX_U32 m_input_msg_id;
+
   // fill this buffer queue
   omx_cmd_queue         m_ftb_q;
   // Command Q for rest of the events
   omx_cmd_queue         m_cmd_q;
   omx_cmd_queue         m_etb_q;
-  omx_cmd_queue         m_opq_meta_q;
-  omx_cmd_queue         m_opq_pmem_q;
   // Input memory pointer
   OMX_BUFFERHEADERTYPE  *m_inp_mem_ptr;
-  OMX_BUFFERHEADERTYPE meta_buffer_hdr[MAX_NUM_INPUT_BUFFERS];
   // Output memory pointer
   OMX_BUFFERHEADERTYPE  *m_out_mem_ptr;
 

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------
-Copyright (c) 2010-2012, Code Aurora Forum. All rights reserved.
+Copyright (c) 2012, Code Aurora Forum. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -33,14 +33,131 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "OMX_QCOMExtns.h"
 #include "qc_omx_component.h"
 #include "omx_video_common.h"
-#include <linux/msm_vidc_enc.h>
-#include <pthread.h>
+#include "omx_video_base.h"
+#include "omx_video_encoder.h"
 #include <linux/videodev2.h>
 #include <poll.h>
-#define TIMEOUT 5000
+#define TIMEOUT 5*60*1000
 #define MAX_RECON_BUFFERS 4
 
 void* async_venc_message_thread (void *);
+
+struct msm_venc_switch{
+	unsigned char	status;
+};
+
+struct msm_venc_allocatorproperty{
+	unsigned long	 mincount;
+	unsigned long	 maxcount;
+	unsigned long	 actualcount;
+	unsigned long	 datasize;
+	unsigned long	 suffixsize;
+	unsigned long	 alignment;
+	unsigned long	 bufpoolid;
+};
+
+struct msm_venc_basecfg{
+	unsigned long	input_width;
+	unsigned long	input_height;
+	unsigned long	dvs_width;
+	unsigned long	dvs_height;
+	unsigned long	codectype;
+	unsigned long	fps_num;
+	unsigned long	fps_den;
+	unsigned long	targetbitrate;
+	unsigned long	inputformat;
+};
+
+struct msm_venc_profile{
+	unsigned long	profile;
+};
+struct msm_venc_profilelevel{
+	unsigned long	level;
+};
+
+struct msm_venc_sessionqp{
+	unsigned long	iframeqp;
+	unsigned long	pframqp;
+	unsigned long	bframqp;
+};
+
+struct msm_venc_qprange{
+	unsigned long	maxqp;
+	unsigned long	minqp;
+};
+struct msm_venc_intraperiod{
+	unsigned long	num_pframes;
+	unsigned long	num_bframes;
+};
+struct msm_venc_seqheader{
+	unsigned char *hdrbufptr;
+	unsigned long	bufsize;
+	unsigned long	hdrlen;
+};
+
+struct msm_venc_capability{
+	unsigned long	codec_types;
+	unsigned long	maxframe_width;
+	unsigned long	maxframe_height;
+	unsigned long	maxtarget_bitrate;
+	unsigned long	maxframe_rate;
+	unsigned long	input_formats;
+	unsigned char	dvs;
+};
+
+struct msm_venc_entropycfg{
+	unsigned longentropysel;
+	unsigned long	cabacmodel;
+};
+
+struct msm_venc_dbcfg{
+	unsigned long	db_mode;
+	unsigned long	slicealpha_offset;
+	unsigned long	slicebeta_offset;
+};
+
+struct msm_venc_intrarefresh{
+	unsigned long	irmode;
+	unsigned long	mbcount;
+};
+
+struct msm_venc_multiclicecfg{
+	unsigned long	mslice_mode;
+	unsigned long	mslice_size;
+};
+
+struct msm_venc_bufferflush{
+	unsigned long	flush_mode;
+};
+
+struct msm_venc_ratectrlcfg{
+	unsigned long	rcmode;
+};
+
+struct	msm_venc_voptimingcfg{
+	unsigned long	voptime_resolution;
+};
+struct msm_venc_framerate{
+	unsigned long	fps_denominator;
+	unsigned long	fps_numerator;
+};
+
+struct msm_venc_targetbitrate{
+	unsigned long	target_bitrate;
+};
+
+
+struct msm_venc_rotation{
+	unsigned long	rotation;
+};
+
+struct msm_venc_timeout{
+	 unsigned long	millisec;
+};
+
+struct msm_venc_headerextension{
+	 unsigned long	header_extension;
+};
 
 class venc_dev
 {
@@ -72,7 +189,6 @@ public:
   bool venc_set_param(void *,OMX_INDEXTYPE);
   bool venc_set_config(void *configData, OMX_INDEXTYPE index);
   bool venc_get_profile_level(OMX_U32 *eProfile,OMX_U32 *eLevel);
-  bool venc_max_allowed_bitrate_check(OMX_U32 nTargetBitrate);
   bool venc_get_seq_hdr(void *, unsigned, unsigned *);
   bool venc_loaded_start(void);
   bool venc_loaded_stop(void);
@@ -81,9 +197,6 @@ public:
   OMX_U32 m_nDriver_fd;
   bool m_profile_set;
   bool m_level_set;
-  pthread_mutex_t loaded_start_stop_mlock;
-  pthread_cond_t loaded_start_stop_cond;
-
   struct recon_buffer {
 	  unsigned char* virtual_address;
 	  int pmem_fd;
@@ -100,35 +213,32 @@ public:
   recon_buffer recon_buff[MAX_RECON_BUFFERS];
   int recon_buffers_count;
   bool m_max_allowed_bitrate_check;
-  int m_eProfile;
-  int m_eLevel;
   int etb_count;
+  class omx_venc *venc_handle;
 private:
-  struct venc_basecfg             m_sVenc_cfg;
-  struct venc_ratectrlcfg         rate_ctrl;
-  struct venc_targetbitrate       bitrate;
-  struct venc_intraperiod         intra_period;
-  struct venc_profile             codec_profile;
-  struct ven_profilelevel         profile_level;
-  struct venc_switch              set_param;
-  struct venc_voptimingcfg        time_inc;
-  struct venc_allocatorproperty   m_sInput_buff_property;
-  struct venc_allocatorproperty   m_sOutput_buff_property;
-  struct venc_sessionqp           session_qp;
-  struct venc_multiclicecfg       multislice;
-  struct venc_entropycfg          entropy;
-  struct venc_dbcfg               dbkfilter;
-  struct venc_intrarefresh        intra_refresh;
-  struct venc_headerextension     hec;
-  struct venc_voptimingcfg        voptimecfg;
-  struct venc_seqheader           seqhdr;
+  struct msm_venc_basecfg             m_sVenc_cfg;
+  struct msm_venc_ratectrlcfg         rate_ctrl;
+  struct msm_venc_targetbitrate       bitrate;
+  struct msm_venc_intraperiod         intra_period;
+  struct msm_venc_profile             codec_profile;
+  struct msm_venc_profilelevel        profile_level;
+  struct msm_venc_switch              set_param;
+  struct msm_venc_voptimingcfg        time_inc;
+  struct msm_venc_allocatorproperty   m_sInput_buff_property;
+  struct msm_venc_allocatorproperty   m_sOutput_buff_property;
+  struct msm_venc_sessionqp           session_qp;
+  struct msm_venc_multiclicecfg       multislice;
+  struct msm_venc_entropycfg          entropy;
+  struct msm_venc_dbcfg               dbkfilter;
+  struct msm_venc_intrarefresh        intra_refresh;
+  struct msm_venc_headerextension     hec;
+  struct msm_venc_voptimingcfg        voptimecfg;
 
   bool venc_set_profile_level(OMX_U32 eProfile,OMX_U32 eLevel);
   bool venc_set_intra_period(OMX_U32 nPFrames, OMX_U32 nBFrames);
   bool venc_set_target_bitrate(OMX_U32 nTargetBitrate, OMX_U32 config);
   bool venc_set_ratectrl_cfg(OMX_VIDEO_CONTROLRATETYPE eControlRate);
-  bool venc_set_session_qp(OMX_U32 i_frame_qp, OMX_U32 p_frame_qp);
-  bool venc_set_extradata(OMX_U32 extra_data);
+  bool venc_set_session_qp(OMX_U32 i_frame_qp, OMX_U32 p_frame_qp,OMX_U32 b_frame_qp);
   bool venc_set_encode_framerate(OMX_U32 encode_framerate, OMX_U32 config);
   bool venc_set_intra_vop_refresh(OMX_BOOL intra_vop_refresh);
   bool venc_set_color_format(OMX_COLOR_FORMATTYPE color_format);
@@ -140,7 +250,6 @@ private:
   bool venc_set_error_resilience(OMX_VIDEO_PARAM_ERRORCORRECTIONTYPE* error_resilience);
   bool venc_set_voptiming_cfg(OMX_U32 nTimeIncRes);
   void venc_config_print();
-  bool venc_set_slice_delivery_mode(OMX_BOOL enable);
 #ifdef MAX_RES_1080P
   OMX_U32 pmem_free();
   OMX_U32 pmem_allocate(OMX_U32 size, OMX_U32 alignment, OMX_U32 count);
@@ -158,4 +267,22 @@ private:
 #endif
 };
 
+enum instance_state {
+	MSM_VIDC_CORE_UNINIT_DONE = 0x0001,
+	MSM_VIDC_CORE_INIT,
+	MSM_VIDC_CORE_INIT_DONE,
+	MSM_VIDC_OPEN,
+	MSM_VIDC_OPEN_DONE,
+	MSM_VIDC_LOAD_RESOURCES,
+	MSM_VIDC_LOAD_RESOURCES_DONE,
+	MSM_VIDC_START,
+	MSM_VIDC_START_DONE,
+	MSM_VIDC_STOP,
+	MSM_VIDC_STOP_DONE,
+	MSM_VIDC_RELEASE_RESOURCES,
+	MSM_VIDC_RELEASE_RESOURCES_DONE,
+	MSM_VIDC_CLOSE,
+	MSM_VIDC_CLOSE_DONE,
+	MSM_VIDC_CORE_UNINIT,
+};
 #endif

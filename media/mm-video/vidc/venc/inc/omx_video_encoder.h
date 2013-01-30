@@ -30,8 +30,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <unistd.h>
 #include "omx_video_base.h"
-#ifdef _COPPER_
-#include "video_encoder_device_copper.h"
+#ifdef _MSM8974_
+#include "video_encoder_device_msm8974.h"
 #else
 #include "video_encoder_device.h"
 #endif
@@ -54,7 +54,6 @@ public:
                            OMX_INDEXTYPE  configIndex,
                            OMX_PTR        configData);
   OMX_ERRORTYPE component_deinit(OMX_HANDLETYPE hComp);
-  bool is_secure_session();
   //OMX strucutres
   OMX_U32 m_nVenc_format;
   class venc_dev *handle;

@@ -49,18 +49,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 static ptrdiff_t x;
 
 #ifdef _ANDROID_
-#ifdef USE_ION
-#include <linux/msm_ion.h>
-#endif
-#include <binder/MemoryHeapBase.h>
-#include <ui/ANativeObjectBase.h>
-#include <binder/IServiceManager.h>
-extern "C"{
-#include<utils/Log.h>
-}
-#include <linux/videodev2.h>
-#include <poll.h>
-#define TIMEOUT 5000
 #ifdef MAX_RES_720P
 #define LOG_TAG "OMX-VDEC-720P"
 #elif MAX_RES_1080P
@@ -68,6 +56,21 @@ extern "C"{
 #else
 #define LOG_TAG "OMX-VDEC"
 #endif
+
+#ifdef USE_ION
+#include <linux/ion.h>
+//#include <linux/ion.h> //TBD - uncomment this
+//#include <binder/MemoryHeapIon.h>
+//#else
+#endif
+#include <binder/MemoryHeapBase.h>
+#include <ui/ANativeObjectBase.h>
+extern "C"{
+#include <utils/Log.h>
+}
+#include <linux/videodev2.h>
+#include <poll.h>
+#define TIMEOUT 5000
 #ifdef ENABLE_DEBUG_LOW
 #define DEBUG_PRINT_LOW ALOGE
 #else
@@ -90,6 +93,12 @@ extern "C"{
 #define DEBUG_PRINT_ERROR printf
 #endif // _ANDROID_
 
+#ifdef _MSM8974_
+#define DEBUG_PRINT_LOW
+#define DEBUG_PRINT_HIGH printf
+#define DEBUG_PRINT_ERROR printf
+#endif
+
 #if defined (_ANDROID_HONEYCOMB_) || defined (_ANDROID_ICS_)
 #include <media/hardware/HardwareAPI.h>
 #endif
@@ -98,7 +107,6 @@ extern "C"{
 
 #if defined (_ANDROID_ICS_)
 #include <gralloc_priv.h>
-#include <IQService.h>
 #endif
 
 #include <pthread.h>
@@ -116,7 +124,7 @@ extern "C"{
 #include <linux/android_pmem.h>
 #include "extra_data_handler.h"
 #include "ts_parser.h"
-#include "vidc_color_converter.h"
+
 extern "C" {
   OMX_API void * get_omx_component_factory_fn(void);
 }
@@ -133,7 +141,7 @@ extern "C" {
        int m_ion_device_fd;
        struct ion_handle *m_ion_handle;
     };
-#else
+#else 
     // local pmem heap object
     class VideoHeap : public MemoryHeapBase
     {
@@ -385,7 +393,6 @@ public:
     int  m_pipe_out;
     pthread_t msg_thread_id;
     pthread_t async_thread_id;
-    bool is_component_secure();
 
 private:
     // Bit Positions
@@ -458,7 +465,7 @@ private:
         VC1_AP = 2
     };
 
-#ifdef _COPPER_
+#ifdef _MSM8974_
     enum v4l2_ports
     {
         CAPTURE_PORT,
@@ -543,6 +550,7 @@ private:
                                          OMX_BUFFERHEADERTYPE **bufferHdr,
                                          OMX_U32 port,OMX_PTR appData,
                                          OMX_U32              bytes);
+
     OMX_ERRORTYPE use_output_buffer(OMX_HANDLETYPE hComp,
                                    OMX_BUFFERHEADERTYPE   **bufferHdr,
                                    OMX_U32                port,
@@ -818,63 +826,14 @@ private:
     bool secure_mode;
     OMX_QCOM_EXTRADATA_FRAMEINFO *m_extradata;
     bool codec_config_flag;
-#ifdef _COPPER_
+#ifdef _MSM8974_
     int capture_capability;
     int output_capability;
     bool streaming[MAX_PORT];
 #endif
-    unsigned int m_fill_output_msg;
-    class allocate_color_convert_buf {
-    public:
-        allocate_color_convert_buf();
-        ~allocate_color_convert_buf();
-        void set_vdec_client(void *);
-        void update_client();
-        bool set_color_format(OMX_COLOR_FORMATTYPE dest_color_format);
-        bool get_color_format(OMX_COLOR_FORMATTYPE &dest_color_format);
-        bool update_buffer_req();
-        bool get_buffer_req(unsigned int &buffer_size);
-        OMX_BUFFERHEADERTYPE* get_il_buf_hdr();
-        OMX_BUFFERHEADERTYPE* get_il_buf_hdr(OMX_BUFFERHEADERTYPE *input_hdr);
-        OMX_BUFFERHEADERTYPE* get_dr_buf_hdr(OMX_BUFFERHEADERTYPE *input_hdr);
-        OMX_BUFFERHEADERTYPE* convert(OMX_BUFFERHEADERTYPE *header);
-        OMX_BUFFERHEADERTYPE* queue_buffer(OMX_BUFFERHEADERTYPE *header);
-        OMX_ERRORTYPE allocate_buffers_color_convert(OMX_HANDLETYPE hComp,
-             OMX_BUFFERHEADERTYPE **bufferHdr,OMX_U32 port,OMX_PTR appData,
-             OMX_U32 bytes);
-        OMX_ERRORTYPE free_output_buffer(OMX_BUFFERHEADERTYPE *bufferHdr);
-    private:
-        #define MAX_COUNT 32
-        omx_vdec *omx;
-        bool enabled;
-        OMX_COLOR_FORMATTYPE ColorFormat;
-        void init_members();
-        bool color_convert_mode;
-        ColorConvertFormat dest_format;
-        class omx_c2d_conv c2d;
-        unsigned int allocated_count;
-        unsigned int buffer_size_req;
-        unsigned int buffer_alignment_req;
-        OMX_QCOM_PLATFORM_PRIVATE_LIST      m_platform_list_client[MAX_COUNT];
-        OMX_QCOM_PLATFORM_PRIVATE_ENTRY     m_platform_entry_client[MAX_COUNT];
-        OMX_QCOM_PLATFORM_PRIVATE_PMEM_INFO m_pmem_info_client[MAX_COUNT];
-        OMX_BUFFERHEADERTYPE  m_out_mem_ptr_client[MAX_COUNT];
-        struct vdec_ion op_buf_ion_info[MAX_COUNT];
-        unsigned char *pmem_baseaddress[MAX_COUNT];
-        int pmem_fd[MAX_COUNT];
-        struct vidc_heap
-        {
-            sp<MemoryHeapBase>    video_heap_ptr;
-        };
-        struct vidc_heap m_heap_ptr[MAX_COUNT];
-    };
-    allocate_color_convert_buf client_buffers;
-    static bool m_secure_display; //For qservice
-    int secureDisplay(int mode);
-    int unsecureDisplay(int mode);
 };
 
-#ifdef _COPPER_
+#ifdef _MSM8974_
 enum instance_state {
 	MSM_VIDC_CORE_UNINIT_DONE = 0x0001,
 	MSM_VIDC_CORE_INIT,
@@ -899,6 +858,6 @@ enum vidc_resposes_id {
 	MSM_VIDC_DECODER_EVENT_CHANGE,
 };
 
-#endif // _COPPER_
+#endif // _MSM8974_
 
 #endif // __OMX_VDEC_H__

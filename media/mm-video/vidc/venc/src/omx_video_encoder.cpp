@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------
-Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
+Copyright (c) 2010-2012, Code Aurora Forum. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -62,16 +62,17 @@ void *get_omx_component_factory_fn(void)
 omx_venc::omx_venc()
 {
 #ifdef _ANDROID_ICS_
+  get_syntaxhdr_enable == false;
   meta_mode_enable = false;
   memset(meta_buffer_hdr,0,sizeof(meta_buffer_hdr));
   memset(meta_buffers,0,sizeof(meta_buffers));
-  memset(opaque_buffer_hdr,0,sizeof(opaque_buffer_hdr));
   mUseProxyColorFormat = false;
 #endif
 }
 
 omx_venc::~omx_venc()
 {
+  get_syntaxhdr_enable == false;
   //nothing to do
 }
 
@@ -126,13 +127,14 @@ OMX_ERRORTYPE omx_venc::component_init(OMX_STRING role)
     strlcpy((char *)m_cRole, "video_encoder.avc",OMX_MAX_STRINGNAME_SIZE);
     codec_type = OMX_VIDEO_CodingAVC;
   }
-  else if(!strncmp((char *)m_nkind, "OMX.qcom.video.encoder.avc.secure",\
+#ifdef _MSM8974_
+  else if(!strncmp((char *)m_nkind, "OMX.qcom.video.encoder.vp8",	\
                    OMX_MAX_STRINGNAME_SIZE))
   {
-    strlcpy((char *)m_cRole, "video_encoder.avc",OMX_MAX_STRINGNAME_SIZE);
-    codec_type = OMX_VIDEO_CodingAVC;
-    secure_session = true;
+    strlcpy((char *)m_cRole, "video_encoder.vp8",OMX_MAX_STRINGNAME_SIZE);
+    codec_type = OMX_VIDEO_CodingVPX;
   }
+#endif
   else
   {
     DEBUG_PRINT_ERROR("\nERROR: Unknown Component\n");
@@ -144,6 +146,9 @@ OMX_ERRORTYPE omx_venc::component_init(OMX_STRING role)
   {
     return eRet;
   }
+#ifdef ENABLE_GET_SYNTAX_HDR
+  get_syntaxhdr_enable = true;
+#endif
 
   handle = new venc_dev(this);
 
@@ -520,21 +525,8 @@ OMX_ERRORTYPE  omx_venc::set_parameter(OMX_IN OMX_HANDLETYPE     hComp,
         if (portDefn->format.video.eColorFormat == (OMX_COLOR_FORMATTYPE)QOMX_COLOR_FormatAndroidOpaque) {
             m_sInPortDef.format.video.eColorFormat =
                 OMX_COLOR_FormatYUV420SemiPlanar;
-            if(secure_session) {
-              secure_color_format = (int) QOMX_COLOR_FormatAndroidOpaque;
-              mUseProxyColorFormat = false;
-              m_input_msg_id = OMX_COMPONENT_GENERATE_ETB;
-            } else if(!mUseProxyColorFormat){
-              if (!c2d_conv.init()) {
-                DEBUG_PRINT_ERROR("\n C2D init failed");
-                return OMX_ErrorUnsupportedSetting;
-              }
-              DEBUG_PRINT_ERROR("\nC2D init is successful");
-              mUseProxyColorFormat = true;
-              m_input_msg_id = OMX_COMPONENT_GENERATE_ETB_OPQ;
-            }
-        } else
-          mUseProxyColorFormat = false;
+            mUseProxyColorFormat = true;
+        } //else case not needed as color format is already updated in the memcpy above
 #endif
         /*Query Input Buffer Requirements*/
         dev_get_buf_req   (&m_sInPortDef.nBufferCountMin,
@@ -600,26 +592,12 @@ OMX_ERRORTYPE  omx_venc::set_parameter(OMX_IN OMX_HANDLETYPE     hComp,
         if (portFmt->eColorFormat ==
             (OMX_COLOR_FORMATTYPE)QOMX_COLOR_FormatAndroidOpaque) {
             m_sInPortFormat.eColorFormat = OMX_COLOR_FormatYUV420SemiPlanar;
-            if(secure_session) {
-              secure_color_format = (int) QOMX_COLOR_FormatAndroidOpaque;
-              mUseProxyColorFormat = false;
-              m_input_msg_id = OMX_COMPONENT_GENERATE_ETB;
-            } else if(!mUseProxyColorFormat){
-              if (!c2d_conv.init()) {
-                DEBUG_PRINT_ERROR("\n C2D init failed");
-                return OMX_ErrorUnsupportedSetting;
-              }
-              DEBUG_PRINT_ERROR("\nC2D init is successful");
-              mUseProxyColorFormat = true;
-              m_input_msg_id = OMX_COMPONENT_GENERATE_ETB_OPQ;
-            }
+            mUseProxyColorFormat = true;
         }
         else
 #endif
         {
             m_sInPortFormat.eColorFormat = portFmt->eColorFormat;
-            m_input_msg_id = OMX_COMPONENT_GENERATE_ETB;
-            mUseProxyColorFormat = false;
         }
         m_sInPortFormat.xFramerate = portFmt->xFramerate;
       }
@@ -749,7 +727,6 @@ OMX_ERRORTYPE  omx_venc::set_parameter(OMX_IN OMX_HANDLETYPE     hComp,
       {
         return OMX_ErrorUnsupportedSetting;
       }
-
       memcpy(&m_sParamAVC,pParam, sizeof(struct OMX_VIDEO_PARAM_AVCTYPE));
       break;
     }
@@ -846,6 +823,20 @@ OMX_ERRORTYPE  omx_venc::set_parameter(OMX_IN OMX_HANDLETYPE     hComp,
           eRet =OMX_ErrorUnsupportedSetting;
         }
       }
+#ifdef _MSM8974_
+      else if(!strncmp((char*)m_nkind, "OMX.qcom.video.encoder.vp8",OMX_MAX_STRINGNAME_SIZE))
+      {
+        if(!strncmp((const char*)comp_role->cRole,"video_encoder.vp8",OMX_MAX_STRINGNAME_SIZE))
+        {
+          strlcpy((char*)m_cRole,"video_encoder.vp8",OMX_MAX_STRINGNAME_SIZE);
+        }
+        else
+        {
+          DEBUG_PRINT_ERROR("ERROR: Setparameter: unknown Index %s\n", comp_role->cRole);
+          eRet =OMX_ErrorUnsupportedSetting;
+        }
+      }
+#endif
       else
       {
         DEBUG_PRINT_ERROR("ERROR: Setparameter: unknown param %s\n", m_nkind);
@@ -1103,16 +1094,6 @@ OMX_ERRORTYPE  omx_venc::set_parameter(OMX_IN OMX_HANDLETYPE     hComp,
       break;
     }
 #endif
-  case OMX_QcomIndexParamSequenceHeaderWithIDR:
-    {
-      if(!handle->venc_set_param(paramData,
-            (OMX_INDEXTYPE)OMX_QcomIndexParamSequenceHeaderWithIDR))
-      {
-        DEBUG_PRINT_ERROR("ERROR: Request for setting inband sps/pps failed");
-        return OMX_ErrorUnsupportedSetting;
-      }
-      break;
-    }
   case OMX_IndexParamVideoSliceFMO:
   default:
     {
@@ -1635,15 +1616,13 @@ int omx_venc::async_message_process (void *context, void* message)
              m_sVenc_msg->buf.clientdata;
 
     if(omxhdr == NULL ||
-       (((OMX_U32)(omxhdr - omx->m_inp_mem_ptr) > omx->m_sInPortDef.nBufferCountActual) &&
-        ((OMX_U32)(omxhdr - omx->meta_buffer_hdr) > omx->m_sInPortDef.nBufferCountActual)))
+       ((OMX_U32)(omxhdr - omx->m_inp_mem_ptr) > omx->m_sInPortDef.nBufferCountActual) )
     {
       omxhdr = NULL;
       m_sVenc_msg->statuscode = VEN_S_EFAIL;
     }
-
 #ifdef _ANDROID_ICS_
-      omx->omx_release_meta_buffer(omxhdr);
+    omx->omx_release_meta_buffer(omxhdr);
 #endif
     omx->post_event ((unsigned int)omxhdr,m_sVenc_msg->statuscode,
                      OMX_COMPONENT_GENERATE_EBD);
@@ -1694,8 +1673,4 @@ int omx_venc::async_message_process (void *context, void* message)
     break;
   }
   return 0;
-}
-bool omx_venc::is_secure_session()
-{
-  return secure_session;
 }

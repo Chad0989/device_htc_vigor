@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------
-Copyright (c) 2009-2012, The Linux Foundation. All rights reserved.
+Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -250,7 +250,8 @@ enum OMX_QCOM_COLOR_FORMATTYPE
  *  interleaved V and U pixels. V and U pixels are sub-sampled
  *  by a factor of two both horizontally and vertically.
  */
-    QOMX_COLOR_FormatYVU420PackedSemiPlanar32m4ka = 0x7FA30C01,
+    QOMX_COLOR_FormatYVU420SemiPlanar = 0x7FA30C00,
+    QOMX_COLOR_FormatYVU420PackedSemiPlanar32m4ka,
     QOMX_COLOR_FormatYUV420PackedSemiPlanar16m2ka,
     QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka,
     QOMX_COLOR_FormatAndroidOpaque = (OMX_COLOR_FORMATTYPE) OMX_COLOR_FormatVendorStartUnused  + 0x789,
@@ -356,7 +357,10 @@ enum OMX_QCOM_EXTN_INDEXTYPE
 
     OMX_QcomIndexEnableSliceDeliveryMode = 0x7F00001F,
 
-    OMX_QcomIndexParamSequenceHeaderWithIDR = 0x7F000020,
+    OMX_QcomIndexEnableExtnUserData = 0x7F000020,
+
+    /*"OMX.QCOM.index.param.video.EnableSmoothStreaming"*/
+    OMX_QcomIndexParamEnableSmoothStreaming = 0x7F000021,
 };
 
 /**
@@ -658,7 +662,9 @@ typedef enum OMX_QCOM_EXTRADATATYPE
    OMX_ExtraDataVideoEncoderSliceInfo = 0x7F000005,
    OMX_ExtraDataConcealMB = 0x7F000006,
    OMX_ExtraDataInterlaceFormat = 0x7F000007,
-   OMX_ExtraDataPortDef = 0x7F000008
+   OMX_ExtraDataPortDef = 0x7F000008,
+   OMX_ExtraDataMP2ExtnData = 0x7F000009,
+   OMX_ExtraDataMP2UserData = 0x7F00000a
 } OMX_QCOM_EXTRADATATYPE;
 
 typedef struct  OMX_STREAMINTERLACEFORMATTYPE {
