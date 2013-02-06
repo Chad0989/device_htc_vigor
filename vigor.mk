@@ -37,11 +37,6 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/ramdisk/init.vigor.rc:root/init.vigor.rc \
     device/htc/vigor/ramdisk/ueventd.vigor.rc:root/ueventd.vigor.rc \
     device/htc/vigor/ramdisk/init.vigor.usb.rc:root/init.vigor.usb.rc
-    
-# QCOM
-PRODUCT_COPY_FILES += \
-    device/htc/vigor/prebuilt/etc/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
-    device/htc/vigor/prebuilt/etc/init.qcom.mdm_links.sh:system/etc/init.qcom.mdm_links.sh
 
 # Hostapd
 PRODUCT_COPY_FILES += \
