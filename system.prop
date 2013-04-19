@@ -28,6 +28,25 @@ persist.rild.ril.ltedrtable=max_retries=infinite,10000
 DEVICE_PROVISIONED = 1
 ro.baseband.arch = svlte2a
 
+# root access
+
+# Turns on Developer Options at first boot
+ro.secure=0
+
+# Turns on USB Debugging if Developer Options are turned On
+ro.debuggable=1
+persist.service.adb.enable=1
+
+#CM only, to set Apps + ADB root access
+persist.sys.root_access=3
+
+# Following 2 lines enable skipping of ROM setup wizard
+# Uncomment with caution, as skipping setup wizard means Google Backup + Location settings are set to defaults of ON
+
+#ro.setupwizard.enterprise_mode=1
+#ro.setupwizard.mode=DISABLED
+
+
 # graphics
 debug.composition.type = dyn
 debug.enabletr = true
