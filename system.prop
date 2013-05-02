@@ -28,15 +28,6 @@ persist.rild.ril.ltedrtable=max_retries=infinite,10000
 DEVICE_PROVISIONED = 1
 ro.baseband.arch = svlte2a
 
-# graphics
-debug.composition.type = dyn
-debug.enabletr = true
-debug.sf.hw = 1
-debug.egl.hw = 1
-ro.opengles.version = 131072
-ro.sf.compbypass.enable = 1
-debug.qctwa.preservebuf = 1
-
 # For QC perf binary hooks
 ro.vendor.extension_library = /system/lib/libqc-opt.so
 
