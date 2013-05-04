@@ -107,6 +107,13 @@ ro.ril.def.agps.mode = 6
 # audio
 lpa.decode = true
 lpa.use-stagefright = true
+media.stagefright.enable-player = true
+media.stagefright.enable-http = true
+media.stagefright.enable-fma2dp = false
+media.stagefright.enable-aac = true
+media.stagefright.enable-qcp = true
+media.stagefright.enable-scan = true
+mmp.enable.3g2=true
 use.non-omx.mp3.decoder = true
 use.non-omx.aac.decode = true
 media.a1026.nsForVoiceRec = 0
