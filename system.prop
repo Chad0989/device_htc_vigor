@@ -107,6 +107,15 @@ ro.ril.def.agps.mode = 6
 # audio
 lpa.decode = true
 lpa.use-stagefright = true
+media.stagefright.enable-player = true
+media.stagefright.enable-http = true
+media.stagefright.enable-fma2dp = false
+media.stagefright.enable-aac = true
+media.stagefright.enable-qcp = true
+media.stagefright.enable-scan = true
+mmp.enable.3g2=true
+use.non-omx.mp3.decoder = true
+use.non-omx.aac.decode = true
 media.a1026.nsForVoiceRec = 0
 media.a1026.enableA1026 = 0
 htc.audio.alt.enable = 0
@@ -144,3 +153,9 @@ ro.modem.load.release_key = true
 # UMS
 persist.sys.usb.config = mass_storage,adb
 ro.vold.umsdirtyratio=50
+
+# Scrolling Tweaks
+windowsmgr.max_events_per_sec=150
+ro.max.fling_velocity=12000
+ro.min.fling_velocity=8000
+view.scroll_friction=0
