@@ -124,7 +124,8 @@ PRODUCT_COPY_FILES += device/htc/vigor/configs/adreno_config.txt:system/etc/adre
 PRODUCT_COPY_FILES += device/htc/vigor/prebuilt/thermald.conf:system/etc/thermald.conf
 
 PRODUCT_PROPERTY_OVERRIDES := \
-wifi.interface=wlan0
+wifi.interface=wlan0 \
+dalvik.vm.heapsize=256m
 
 BOARD_WLAN_DEVICE_REV := bcm4330_b2
 WIFI_BAND := 802_11_ABG
