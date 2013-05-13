@@ -113,10 +113,6 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/keylayout/atmel-touchscreen.kl:system/usr/keylayout/atmel-touchscreen.kl \
     device/htc/vigor/prebuilt/atmel-touchscreen.idc:system/usr/idc/atmel-touchscreen.idc
 
-# Firmware
-PRODUCT_COPY_FILES += \
-    device/htc/vigor/firmware/default_bak.acdb:system/etc/firmware/default_bak.acdb
-
 # Graphics
 PRODUCT_COPY_FILES += device/htc/vigor/configs/adreno_config.txt:system/etc/adreno_config.txt
 
