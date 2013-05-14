@@ -113,10 +113,6 @@ PRODUCT_COPY_FILES += \
     device/htc/vigor/keylayout/atmel-touchscreen.kl:system/usr/keylayout/atmel-touchscreen.kl \
     device/htc/vigor/prebuilt/atmel-touchscreen.idc:system/usr/idc/atmel-touchscreen.idc
 
-# Firmware
-PRODUCT_COPY_FILES += \
-    device/htc/vigor/firmware/default_bak.acdb:system/etc/firmware/default_bak.acdb
-
 # Graphics
 PRODUCT_COPY_FILES += device/htc/vigor/configs/adreno_config.txt:system/etc/adreno_config.txt
 
@@ -125,7 +121,6 @@ PRODUCT_COPY_FILES += device/htc/vigor/prebuilt/thermald.conf:system/etc/thermal
 
 PRODUCT_PROPERTY_OVERRIDES := \
 wifi.interface=wlan0 \
-dalvik.vm.heapsize=256m
 
 BOARD_WLAN_DEVICE_REV := bcm4330_b2
 WIFI_BAND := 802_11_ABG
@@ -142,5 +137,5 @@ PRODUCT_LOCALES += en_US
 # Inherit configs
 $(call inherit-product-if-exists, vendor/htc/vigor/vigor-vendor.mk)
 $(call inherit-product, device/htc/msm8660-common/msm8660.mk)
-$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 $(call inherit-product, build/target/product/full_base_telephony.mk)
