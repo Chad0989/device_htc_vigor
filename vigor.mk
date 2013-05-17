@@ -21,7 +21,7 @@ DEVICE_PACKAGE_OVERLAYS := device/htc/vigor/overlay
 PRODUCT_COPY_FILES := device/common/gps/gps.conf_US_SUPL:system/etc/gps.conf
 
 # CDMA/GSM Combined APNs list
-PRODUCT_COPY_FILES += device/htc/vigor/prebuilt/apns-conf.xml:system/etc/apns-conf.xml
+# PRODUCT_COPY_FILES += device/htc/vigor/prebuilt/apns-conf.xml:system/etc/apns-conf.xml
 
 ## recovery and custom charging
 PRODUCT_COPY_FILES += \
