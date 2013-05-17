@@ -7,9 +7,8 @@ ro.sf.lcd_density = 320
 # RIL properties
 # cm props
 mobiledata.interfaces = rmnet0,rmnet_sdio0
-ro.telephony.ril_class = HTCQualcommRIL
-ro.telephony.ril.v3=skipradiooff
-ro.telephony.default_network = 10
+ro.telephony.ril_class = HTCVigorQualcommRIL
+ro.telephony.default_network = 8
 telephony.lteOnCdmaDevice = 1
 
 # RIL properties
