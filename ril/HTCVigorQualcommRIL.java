@@ -41,7 +41,7 @@ import java.util.ArrayList;
  *
  * {@hide}
  */
-public class HTCQualcommRIL extends QualcommSharedRIL implements CommandsInterface {
+public class HTCVigorQualcommRIL extends QualcommSharedRIL implements CommandsInterface {
 
     private static final int RIL_UNSOL_ENTER_LPM = 3023;
     private static final int RIL_UNSOL_TPMR_ID = 3024;
@@ -52,7 +52,7 @@ public class HTCQualcommRIL extends QualcommSharedRIL implements CommandsInterfa
     private static final int RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED = 5755;
     private static final int RIL_UNSOL_RESPONSE_DATA_NETWORK_STATE_CHANGED = 5757;
 
-    public HTCQualcommRIL(Context context, int networkMode, int cdmaSubscription) {
+    public HTCVigorQualcommRIL(Context context, int networkMode, int cdmaSubscription) {
         super(context, networkMode, cdmaSubscription);
     }
 
