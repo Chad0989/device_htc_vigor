@@ -19,10 +19,12 @@
         <item>Global</item>
         <item>GSM/WCDMA</item>
         <item>LTE/CDMA</item>
+        <item>CDMA Only</item>
     </string-array>
     <string-array name="preferred_network_mode_values"  translatable="false">
         <item>"10"</item>
         <item>"9"</item>
         <item>"8"</item>
+        <item>"4"</item>
     </string-array>
 </resources>
